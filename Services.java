@@ -43,7 +43,7 @@ public class Services extends javax.swing.JFrame {
 
     private ArrayList<String[]> loadServicesData() {
         ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("services.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:\\services.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -56,7 +56,7 @@ public class Services extends javax.swing.JFrame {
     }
 
     private void saveServicesData(ArrayList<String[]> data) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("services.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\services.txt"))) {
             for (String[] service : data) {
                 String line = String.join(",", service);
                 writer.write(line);
