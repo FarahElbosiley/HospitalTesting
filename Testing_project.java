@@ -95,6 +95,16 @@ public class Testing_project extends javax.swing.JFrame {
                 jMenuItem7ActionPerformed(evt);
             }
         });
+        jMenuItem9 = new javax.swing.JMenuItem(); // Add a new JMenuItem for Bills
+
+    jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+    jMenuItem9.setText("Bills");
+    jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jMenuItem9ActionPerformed(evt);
+        }
+    });
+    jMenu2.add(jMenuItem9);
         jMenu2.add(jMenuItem7);
 
         jMenuBar1.add(jMenu2);
@@ -166,7 +176,11 @@ public class Testing_project extends javax.swing.JFrame {
             new Testing_project().setVisible(true);
         });
     }
-
+private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {
+    // Handle the Bills menu item click event
+    BillViewer billViewer = new BillViewer(); // Create an instance of BillViewer
+    billViewer.setVisible(true); // Show the BillViewer frame
+}
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
