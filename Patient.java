@@ -15,11 +15,13 @@ public class Patient extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
 
     private ArrayList<String[]> patientsData; // To hold patient records
+    private Bill billManager; // Add Bill manager
 
     public Patient() {
         initComponents();
         loadPatientsData();
         displayPatientsData();
+        billManager = new Bill(); // Initialize Bill manager
     }
 
     private void initComponents() {
@@ -49,17 +51,21 @@ public class Patient extends javax.swing.JFrame {
         pack();
     }
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
+   /** private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
         int row = jTable1.getSelectedRow();
         if (row >= 0 && row < patientsData.size()) {
             String[] patient = patientsData.get(row);
             showPatientDetails(patient);
         }
     }
+**/
+   private void displayPatientBills(String patientID) {
+        billManager.displayPatientBills(patientID, jTable1);
+    }
 
     private void loadPatientsData() {
         patientsData = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("patients.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:patients.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] patientInfo = line.split(",");
@@ -79,27 +85,42 @@ public class Patient extends javax.swing.JFrame {
         }
         jTable1.setModel(model);
     }
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
+        int row = jTable1.getSelectedRow();
+       /** if (row >= 0 && row < patientsData.size()) {
+            String[] patient = patientsData.get(row);
+            String patientID = patient[0];
+            displayPatientBills(patientID); // Display bills for selected patient
+        }**/
+        if (row >= 0) {
+            String patientID = jTable1.getValueAt(row, 0).toString();
+            String patientName = jTable1.getValueAt(row, 1).toString();
+            String fatherName = jTable1.getValueAt(row, 2).toString();
+            String address = jTable1.getValueAt(row, 3).toString();
+            String contactNo = jTable1.getValueAt(row, 4).toString();
+            String email = jTable1.getValueAt(row, 5).toString();
+            String age = jTable1.getValueAt(row, 6).toString();
+            String gender = jTable1.getValueAt(row, 7).toString();
+            String bloodGroup = jTable1.getValueAt(row, 8).toString();
+            String remarks = jTable1.getValueAt(row, 9).toString();
 
-    private void showPatientDetails(String[] patient) {
-        Registration frm;
-        frm = new Registration();
-        frm.setVisible(true);
-        frm.txtId.setText(patient[0]);
-        frm.txtName.setText(patient[1]);
-        frm.txtFname.setText(patient[2]);
-        frm.txtEmail.setText(patient[5]);
-        frm.txtAge.setText(patient[6]);
-        frm.txtInfo.setText(patient[9]);
-        frm.cmbBG.setSelectedItem(patient[8]);
-        frm.cmbGender.setSelectedItem(patient[7]);
-        frm.txtAdd.setText(patient[3]);
-        frm.txtContact.setText(patient[4]);
-        frm.btnUpdate.setEnabled(true);
-        frm.btnDelete.setEnabled(true);
-        frm.btnSave.setEnabled(false);
-    }
-
-    public static void main(String args[]) {
+            // Display selected patient details (for demonstration)
+            JOptionPane.showMessageDialog(this,
+                    "Patient ID: " + patientID + "\n"
+                    + "Patient Name: " + patientName + "\n"
+                    + "Father Name: " + fatherName + "\n"
+                    + "Address: " + address + "\n"
+                    + "Contact No: " + contactNo + "\n"
+                    + "Email ID: " + email + "\n"
+                    + "Age: " + age + "\n"
+                    + "Gender: " + gender + "\n"
+                    + "Blood Group: " + bloodGroup + "\n"
+                    + "Remarks: " + remarks,
+                    "Patient Details", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }    
+    
+   public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
