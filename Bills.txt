@@ -1,0 +1,10 @@
+1,Checkup,2024-04-01,100.00
+2,X-Ray,2024-04-03,150.00
+3,Blood Test,2024-04-02,80.00
+4,Medication,2024-04-04,50.00
+5,Dental Cleaning,2024-04-05,120.00
+6,Physical Therapy,2024-04-06,200.00
+7,Ultrasound,2024-04-07,180.00
+8,CT Scan,2024-04-08,250.00
+9,Electrocardiogram,2024-04-09,90.00
+10,Endoscopy,2024-04-10,300.00

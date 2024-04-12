@@ -1,13 +1,12 @@
 package com.mycompany.testing_project;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
-public class BillViewer extends javax.swing.JFrame {
+public class BillViewer extends javax.swing.JFrame 
+{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
 
@@ -17,7 +16,7 @@ public class BillViewer extends javax.swing.JFrame {
         initComponents();
         billManager = new Bill(); // Initialize Bill manager
         displayPatientBills();
-    }
+   }
 
     private void initComponents() {
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -49,7 +48,7 @@ public class BillViewer extends javax.swing.JFrame {
         ArrayList<String[]> billData = new ArrayList<>();
 
         // Read bill data from Bill.txt and populate billData ArrayList
-        try (BufferedReader reader = new BufferedReader(new FileReader("D://Bill.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Bills.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] billInfo = line.split(",");

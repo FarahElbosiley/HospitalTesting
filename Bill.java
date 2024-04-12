@@ -25,7 +25,7 @@ public class Bill {
     }
 
     public void saveBills(String fileName) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Bills.txt"))) {
             for (Map.Entry<String, List<String[]>> entry : patientBills.entrySet()) {
                 String patientID = entry.getKey();
                 List<String[]> bills = entry.getValue();

@@ -65,7 +65,7 @@ public class Patient extends javax.swing.JFrame {
 
     private void loadPatientsData() {
         patientsData = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("D:patients.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\patient.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] patientInfo = line.split(",");
@@ -120,19 +120,4 @@ public class Patient extends javax.swing.JFrame {
         }
     }    
     
-   public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Patient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(() -> {
-            new Patient().setVisible(true);
-        });
-    }
 }

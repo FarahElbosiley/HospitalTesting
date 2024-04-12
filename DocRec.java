@@ -62,14 +62,14 @@ public class DocRec extends javax.swing.JFrame {
         model.addColumn("Doctor ID");
         model.addColumn("Doctor Name");
         for (String[] doctor : doctorsData) {
-            model.addRow(new Object[]{doctor[0], doctor[1]});
+            model.addRow(new Object[]{doctor[0], doctor[2]});
         }
         jTable1.setModel(model);
     }
 
     private ArrayList<String[]> loadDoctorsData() {
         ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("doctors.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Doctors.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");

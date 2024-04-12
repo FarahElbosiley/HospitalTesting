@@ -1,4 +1,5 @@
 package com.mycompany.testing_project;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -20,10 +21,49 @@ public class Services extends javax.swing.JFrame {
         displayServicesData();
     }
 
-    private void initComponents() {
-        // Initialize components as defined in the original code
-        // Omitted for brevity
-    }
+private void initComponents() {
+    txtNew = new javax.swing.JButton("New");
+    txtSave = new javax.swing.JButton("Save");
+    txtDelete = new javax.swing.JButton("Delete");
+    txtServiceName = new javax.swing.JTextField(20);
+    txtServiceDate = new javax.swing.JTextField(20);
+    txtPatientID = new javax.swing.JTextField(20);
+    txtPatientName = new javax.swing.JTextField(20);
+    txtServiceCharges = new javax.swing.JTextField(20);
+    tblPatient = new javax.swing.JTable();
+
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setTitle("Services Management");
+
+    // Create a panel to hold buttons
+    javax.swing.JPanel buttonPanel = new javax.swing.JPanel();
+    buttonPanel.add(txtNew);
+    buttonPanel.add(txtSave);
+    buttonPanel.add(txtDelete);
+
+    // Create a panel to hold text fields
+    javax.swing.JPanel textFieldPanel = new javax.swing.JPanel();
+    textFieldPanel.setLayout(new java.awt.GridLayout(5, 2));
+    textFieldPanel.add(new javax.swing.JLabel("Service Name:"));
+    textFieldPanel.add(txtServiceName);
+    textFieldPanel.add(new javax.swing.JLabel("Service Date:"));
+    textFieldPanel.add(txtServiceDate);
+    textFieldPanel.add(new javax.swing.JLabel("Patient ID:"));
+    textFieldPanel.add(txtPatientID);
+    textFieldPanel.add(new javax.swing.JLabel("Patient Name:"));
+    textFieldPanel.add(txtPatientName);
+    textFieldPanel.add(new javax.swing.JLabel("Service Charges:"));
+    textFieldPanel.add(txtServiceCharges);
+
+    // Add components to content pane
+    getContentPane().add(buttonPanel, java.awt.BorderLayout.NORTH);
+    getContentPane().add(textFieldPanel, java.awt.BorderLayout.CENTER);
+    getContentPane().add(new javax.swing.JScrollPane(tblPatient), java.awt.BorderLayout.SOUTH);
+
+    pack();
+}
+
+
 
     private void displayServicesData() {
         DefaultTableModel model = new DefaultTableModel();
@@ -43,7 +83,7 @@ public class Services extends javax.swing.JFrame {
 
     private ArrayList<String[]> loadServicesData() {
         ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("D:\\services.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\services.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
