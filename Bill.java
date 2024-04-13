@@ -24,15 +24,7 @@ public class Bill extends javax.swing.JFrame {
         initComponents();
         patientBills = new HashMap<>();
         loadBillsFromFile("D:/Bills.txt");
-        // displayPatientBills( , JTable); // You can call displayPatientBills here if needed
-
-        // Add window listener to handle window closing event
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                saveBillsToFile("D:/Bills.txt");
-            }
-        });
+        displayPatientBills(); // Display bills upon program startup
     }
 
     private void initComponents() {
@@ -61,7 +53,7 @@ public class Bill extends javax.swing.JFrame {
         pack();
     }
 
-    private void loadBillsFromFile(String fileName) {
+    public void loadBillsFromFile(String fileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -72,7 +64,7 @@ public class Bill extends javax.swing.JFrame {
                     addBill(patientID, billInfo);
                 }
             }
-            JOptionPane.showMessageDialog(null, "Bills loaded successfully.");
+           // JOptionPane.showMessageDialog(null, "Bills loaded successfully.");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error loading bills: " + e.getMessage());
         }
@@ -85,7 +77,19 @@ public class Bill extends javax.swing.JFrame {
         patientBills.get(patientID).add(billInfo);
     }
 
-    public void displayPatientBills(String patientID, JTable table) {
+    public void displayPatientBills() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Clear existing rows
+
+        for (Map.Entry<String, List<String[]>> entry : patientBills.entrySet()) {
+            String patientID = entry.getKey();
+            List<String[]> bills = entry.getValue();
+            for (String[] bill : bills) {
+                model.addRow(new Object[]{patientID, bill[0], bill[1], bill[2]});
+            }
+        }
+    }
+  public void displayPatientBills(String patientID, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); // Clear existing rows
 
@@ -98,7 +102,6 @@ public class Bill extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No bills found for patient ID: " + patientID);
         }
     }
-
     private void saveBillsToFile(String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (Map.Entry<String, List<String[]>> entry : patientBills.entrySet()) {
