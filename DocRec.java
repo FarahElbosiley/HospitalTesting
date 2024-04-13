@@ -1,11 +1,9 @@
 package com.mycompany.testing_project;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
