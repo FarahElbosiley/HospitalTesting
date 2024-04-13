@@ -77,14 +77,14 @@ public class Inventory extends JFrame {
 
         inventoryTable.setModel(model);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                HospitalInventoryGUI inventoryGUI = new HospitalInventoryGUI();
-                inventoryGUI.setVisible(true);
-            }
-        });
-    }
 }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                HospitalInventoryGUI inventoryGUI = new HospitalInventoryGUI();
+//                inventoryGUI.setVisible(true);
+//            }
+//        });
+//    }
+//}
