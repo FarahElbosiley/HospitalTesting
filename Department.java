@@ -71,7 +71,7 @@ public class Department extends JFrame {
     // Load services data from file
     private ArrayList<String[]> loadServicesData() {
         ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("services.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:/services.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -126,7 +126,7 @@ public class Department extends JFrame {
 
     // Save services data to file
     private void saveServicesData(ArrayList<String[]> data) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("services.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/services.txt"))) {
             for (String[] service : data) {
                 String line = String.join(",", service);
                 writer.write(line);
