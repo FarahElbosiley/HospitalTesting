@@ -47,9 +47,9 @@ public class Testing_project extends javax.swing.JFrame {
         );
 
         JMenu jMenu1 = new JMenu();
-        jMenu1.setText("Admin");
+        jMenu1.setText("Inventory");
         jMenu1.setFont(new java.awt.Font("Arial", 0, 18));
-        jMenu1.setPreferredSize(new java.awt.Dimension(60, 25));
+        jMenu1.setPreferredSize(new java.awt.Dimension(90, 25));
 /**
         JMenuItem jMenuItem1 = new JMenuItem();
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
@@ -65,7 +65,7 @@ public class Testing_project extends javax.swing.JFrame {
 **/
         jMenuItem10 = new JMenuItem(); // Instantiate jMenuItem10 for Inventory
         jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem10.setText("Inventory");
+        jMenuItem10.setText("Inventory items");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
@@ -79,7 +79,7 @@ public class Testing_project extends javax.swing.JFrame {
         JMenu jMenu2 = new JMenu();
         jMenu2.setText("Patients");
         jMenu2.setFont(new java.awt.Font("Arial", 0, 18));
-        jMenu2.setPreferredSize(new java.awt.Dimension(70, 25));
+        jMenu2.setPreferredSize(new java.awt.Dimension(90, 25));
 
         JMenuItem jMenuItem6 = new JMenuItem();
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
@@ -109,6 +109,15 @@ public class Testing_project extends javax.swing.JFrame {
                 jMenuItem9ActionPerformed(evt);
             }
         });
+        JMenuItem jMenuItem12 = new JMenuItem(); 
+        jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem12.setText("Medical Records");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        
         jMenu2.add(jMenuItem9);
 
         jMenuBar1.add(jMenu2);
@@ -116,7 +125,7 @@ public class Testing_project extends javax.swing.JFrame {
         JMenu jMenu3 = new JMenu();
         jMenu3.setText("Doctors");
         jMenu3.setFont(new java.awt.Font("Arial", 0, 18));
-        jMenu3.setPreferredSize(new java.awt.Dimension(71, 25));
+        jMenu3.setPreferredSize(new java.awt.Dimension(90, 25));
 
         JMenuItem jMenuItem4 = new JMenuItem();
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
@@ -133,9 +142,9 @@ public class Testing_project extends javax.swing.JFrame {
         jMenu5.add(jMenu7);
         jMenuBar1.add(jMenu5);
 
-        jMenu4.setText("Services");
+        jMenu4.setText("Departments");
         jMenu4.setFont(new java.awt.Font("Arial", 0, 18));
-        jMenu4.setPreferredSize(new java.awt.Dimension(75, 25));
+        jMenu4.setPreferredSize(new java.awt.Dimension(110, 25));
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         jMenu4.add(jMenuItem5);
@@ -184,6 +193,12 @@ public class Testing_project extends javax.swing.JFrame {
         inventory.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
         inventory.setVisible(true);
     }
+private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {
+    // Handle Medical Records menu item action
+    MedicalRecords records = new MedicalRecords();
+    records.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
+    records.setVisible(true);
+}
 public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
