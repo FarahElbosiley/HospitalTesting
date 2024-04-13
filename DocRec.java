@@ -2,9 +2,9 @@ package com.mycompany.testing_project;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
 import java.util.ArrayList;
 
 public class DocRec extends javax.swing.JFrame {
@@ -16,6 +16,14 @@ public class DocRec extends javax.swing.JFrame {
         initComponents();
         doctorsData = loadDoctorsData();
         displayDoctorsData();
+
+        // Add WindowListener to handle window closing event
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                saveDoctorsData(); // Save data when window is closing
+            }
+        });
     }
 
     private void initComponents() {
@@ -67,7 +75,7 @@ public class DocRec extends javax.swing.JFrame {
 
     private ArrayList<String[]> loadDoctorsData() {
         ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Doctors.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:/Doctors.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -77,6 +85,17 @@ public class DocRec extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error loading doctor data: " + e.getMessage());
         }
         return data;
+    }
+
+    private void saveDoctorsData() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/Doctors.txt"))) {
+            for (String[] doctor : doctorsData) {
+                writer.write(String.join(",", doctor));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error saving doctor data: " + e.getMessage());
+        }
     }
 
     public static void main(String args[]) {
