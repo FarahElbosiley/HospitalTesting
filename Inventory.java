@@ -63,12 +63,12 @@ public class Inventory extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveInventoryToFile("inventory.txt");
+                saveInventoryToFile("D:/inventory.txt");
             }
         });
 
         // Load inventory data from file when the application starts
-        loadInventoryFromFile("inventory.txt");
+        loadInventoryFromFile("D:/inventory.txt");
     }
 
     private void addItemToInventory(String itemName, int quantity) {
@@ -117,7 +117,7 @@ public class Inventory extends JFrame {
                 }
             }
             updateInventoryTable(); // Update the table after loading data
-            JOptionPane.showMessageDialog(null, "Inventory loaded successfully.");
+            // JOptionPane.showMessageDialog(null, "Inventory loaded successfully.");
         } catch (IOException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Error loading inventory: " + e.getMessage());
         }
