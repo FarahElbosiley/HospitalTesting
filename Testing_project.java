@@ -109,6 +109,7 @@ public class Testing_project extends javax.swing.JFrame {
                 jMenuItem9ActionPerformed(evt);
             }
         });
+        jMenu2.add(jMenuItem9);
         JMenuItem jMenuItem12 = new JMenuItem(); 
         jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem12.setText("Medical Records");
@@ -118,7 +119,8 @@ public class Testing_project extends javax.swing.JFrame {
             }
         });
         
-        jMenu2.add(jMenuItem9);
+      
+        jMenu2.add(jMenuItem12); // Add Medical Records to Patients menu
 
         jMenuBar1.add(jMenu2);
 
@@ -193,12 +195,12 @@ public class Testing_project extends javax.swing.JFrame {
         inventory.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
         inventory.setVisible(true);
     }
-private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {
-    // Handle Medical Records menu item action
-    MedicalRecords records = new MedicalRecords();
-    records.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
-    records.setVisible(true);
-}
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Handle Medical Records menu item action
+        MedicalRecords records = new MedicalRecords();
+        records.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
+        records.setVisible(true);
+    }
 public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -232,6 +234,6 @@ public static void main(String args[]) {
                 }
             });
         });
-}
+    }
 }
 
