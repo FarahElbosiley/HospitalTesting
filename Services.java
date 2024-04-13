@@ -9,16 +9,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Services extends javax.swing.JFrame {
 
-    private ArrayList<String[]> servicesData;
+      public ArrayList<Service>  Services;
 
     public Services() {
         initComponents();
         setLocationRelativeTo(null);
-        servicesData = loadServicesData();
-        displayServicesData();
+        Services = new ArrayList<Service>();
     }
 
 private void initComponents() {
@@ -64,78 +64,63 @@ private void initComponents() {
 }
 
 
+private void displayServicesData() {
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("Service ID");
+    model.addColumn("Service Name");
+    model.addColumn("Service Date");
+    model.addColumn("Patient ID");
+    model.addColumn("Patient Name");
+    model.addColumn("Service Charges");
 
-    private void displayServicesData() {
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Service ID");
-        model.addColumn("Service Name");
-        model.addColumn("Service Date");
-        model.addColumn("Patient ID");
-        model.addColumn("Patient Name");
-        model.addColumn("Service Charges");
-
-        for (String[] service : servicesData) {
-            model.addRow(service);
-        }
-
-        tblPatient.setModel(model);
+    for (Service service : Services) {
+        Object[] rowData = {service.getServiceId(), service.getServiceName(), service.getServiceDate(), service.getPatientId(), service.getPatientName(), service.getServiceCharges()};
+        model.addRow(rowData);
     }
 
-    private ArrayList<String[]> loadServicesData() {
-        ArrayList<String[]> data = new ArrayList<>();
+    tblPatient.setModel(model);
+}
+
+
+     private void loadServicesData() {
+        Services = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\services.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                data.add(parts);
+                String[] servicesInfo = line.split(",");
+                if (servicesInfo.length == 6) {
+                    int serviceID = Integer.parseInt(servicesInfo[0]);
+                    String serviceName = servicesInfo[1];
+                    Date serviceDate = new Date(servicesInfo[2]); // Assuming the date is stored as a string
+                    int patientID = Integer.parseInt(servicesInfo[3]);
+                    String patientName = servicesInfo[4];
+                    double serviceCharges = Double.parseDouble(servicesInfo[5]);
+                    Service service = new Service(serviceID, serviceName, serviceDate, patientID, patientName, serviceCharges);
+                    Services.add(service);
+                } else {
+                    System.out.println("Invalid record format: " + line);
+                }
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error loading services data: " + e.getMessage());
-        }
-        return data;
-    }
-
-    private void saveServicesData(ArrayList<String[]> data) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\services.txt"))) {
-            for (String[] service : data) {
-                String line = String.join(",", service);
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error saving services data: " + e.getMessage());
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error loading services data: " + e.getMessage());
         }
     }
 
-    private void txtNewActionPerformed(java.awt.event.ActionEvent evt) {
-        Reset();
-    }
 
-    private void txtSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        String serviceName = txtServiceName.getText();
-        String serviceDate = txtServiceDate.getText();
-        String patientID = txtPatientID.getText();
-        String patientName = txtPatientName.getText();
-        String serviceCharges = txtServiceCharges.getText();
-
-        String[] service = {serviceName, serviceDate, patientID, patientName, serviceCharges};
-        servicesData.add(service);
-        saveServicesData(servicesData);
-        displayServicesData();
-        Reset();
-    }
-
-    private void txtDeleteActionPerformed(java.awt.event.ActionEvent evt) {
-        int selectedRow = tblPatient.getSelectedRow();
-        if (selectedRow >= 0 && selectedRow < servicesData.size()) {
-            servicesData.remove(selectedRow);
-            saveServicesData(servicesData);
-            displayServicesData();
-            Reset();
-        } else {
-            JOptionPane.showMessageDialog(null, "Please select a service to delete.");
+   private void saveServicesData(ArrayList<Service> data) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\services.txt"))) {
+        for (Service service : data) {
+            String line = service.getServiceId() + "," + service.getServiceName() + "," + service.getServiceDate() + "," + service.getPatientId() + "," + service.getPatientName() + "," + service.getServiceCharges();
+            writer.write(line);
+            writer.newLine();
         }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Error saving services data: " + e.getMessage());
     }
+}
+
+    
+
 
     private void Reset() {
         txtServiceName.setText("");

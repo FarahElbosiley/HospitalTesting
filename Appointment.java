@@ -1,22 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.testing_project;
+
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Appointment extends JFrame {
 
     private JTable jTable1;
-    private ArrayList<String[]> appointmentsData;
+    private ArrayList<Appointments> appointments;
 
     public Appointment() {
         initComponents();
@@ -37,15 +34,23 @@ public class Appointment extends JFrame {
     }
 
     private void loadAppointmentsData() {
-        appointmentsData = new ArrayList<>();
+        appointments = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Appointments.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] appointmentInfo = line.split(",");
-                appointmentsData.add(appointmentInfo);
+                if (appointmentInfo.length == 3) {
+                    int appointmentId = Integer.parseInt(appointmentInfo[0]);
+                    String doctorName = appointmentInfo[1];
+                    String departmentName = appointmentInfo[2];
+                    Appointments appointment = new Appointments(appointmentId, doctorName, departmentName);
+                    appointments.add(appointment);
+                } else {
+                    System.out.println("Invalid record format: " + line);
+                }
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error loading appointment data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error loading appointments data: " + e.getMessage());
         }
     }
 
@@ -54,12 +59,21 @@ public class Appointment extends JFrame {
         model.addColumn("Appointment ID");
         model.addColumn("Doctor's Name");
         model.addColumn("Department Name");
-        for (String[] appointment : appointmentsData) {
-            model.addRow(appointment);
+
+        for (Appointments appointment : appointments) {
+            model.addRow(new Object[]{appointment.getAppointmentId(), appointment.getDoctorName(), appointment.getDepartmentName()});
         }
+
         jTable1.setModel(model);
     }
-
-  
+  public void saveToFile() {
+    try {
+        FileWriter writer = new FileWriter("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Appointments.txt");
+        for (Appointments appointment : appointments) {
+            writer.write(appointment.getAppointmentId() + "," + appointment.getDoctorName() + "," + appointment.getDepartmentName()  + "\n");
+        }
+        writer.close();
+    } catch (IOException e) {
+        System.out.println("Error saving to file.");
     }
-
+}}

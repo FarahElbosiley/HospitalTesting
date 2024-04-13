@@ -1,3 +1,5 @@
+package com.mycompany.testing_project;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -6,20 +8,49 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class MedicalRecords extends JFrame {
+    
+     
+
+    public ArrayList< MedicalRecord>  MedicalRecords;
+   
 
     private JTable jTable1;
     private ArrayList<String[]> patientsData;
+  
 
     public MedicalRecords() {
         initComponents();
         loadPatientsData();
         displayPatientsData();
+        MedicalRecords = new ArrayList< MedicalRecord>();
     }
-
+     private void loadMedicalRecords() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Medical_Record.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 6) { // Assuming each line has 6 fields
+                    int ID = Integer.parseInt(parts[0]);
+                    String bloodPressure = parts[1];
+                    String bloodSugar = parts[2];
+                    String cholesterol = parts[3];
+                    String bloodType = parts[4];
+                    String allergies = parts[5];
+                    MedicalRecord record = new MedicalRecord(ID, bloodPressure, bloodSugar, cholesterol, bloodType, allergies);
+                    MedicalRecords.add(record);
+                } else {
+                    System.out.println("Invalid record format: " + line);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error loading medical records: " + e.getMessage());
+        }
+    }
     private void initComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Medical Records");
@@ -45,36 +76,31 @@ public class MedicalRecords extends JFrame {
         }
     }
 
-    public void displayPatientMedicalRecords(String patientID) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Medical_Record.txt"))) {
-            String line;
-            StringBuilder medicalRecord = new StringBuilder();
-            boolean found = false;
-
-            while ((line = reader.readLine()) != null) {
-                String[] record = line.split(",");
-                if (record.length > 0 && record[0].equals(patientID)) {
-                    found = true;
-                    medicalRecord.append("ID: ").append(record[0]).append("\n");
-                    medicalRecord.append("BloodPressure: ").append(record[1]).append("\n");
-                    medicalRecord.append("BloodSugar: ").append(record[2]).append("\n");
-                    medicalRecord.append("Cholesterol: ").append(record[3]).append("\n");
-                    medicalRecord.append("BloodType: ").append(record[4]).append("\n");
-                    medicalRecord.append("Allergies: ").append(record[5]).append("\n");
-                    break;
-                }
-            }
-
-            if (!found) {
-                JOptionPane.showMessageDialog(this, "No medical records found for patient ID: " + patientID, "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, formatMedicalRecord(medicalRecord.toString()), "Medical Records for Patient ID: " + patientID, JOptionPane.INFORMATION_MESSAGE);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error loading medical records: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+     public void displayPatientMedicalRecords(String patientID) {
+    loadMedicalRecords();
+    StringBuilder medicalRecord = new StringBuilder();
+    boolean found = false;
+    int id = Integer.parseInt(patientID);
+    
+    for (MedicalRecord record : MedicalRecords) {
+        if (record.getID() == id) {
+            found = true;
+            medicalRecord.append("ID: ").append(record.getID()).append("\n");
+            medicalRecord.append("BloodPressure: ").append(record.getBloodPressure()).append("\n");
+            medicalRecord.append("BloodSugar: ").append(record.getBloodSugar()).append("\n");
+            medicalRecord.append("Cholesterol: ").append(record.getCholesterol()).append("\n");
+            medicalRecord.append("BloodType: ").append(record.getBloodType()).append("\n");
+            medicalRecord.append("Allergies: ").append(record.getAllergies()).append("\n");
+            break;
         }
     }
 
+    if (!found) {
+        JOptionPane.showMessageDialog(this, "No medical records found for patient ID: " + patientID, "No Records Found", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        JOptionPane.showMessageDialog(this, formatMedicalRecord(medicalRecord.toString()), "Medical Records for Patient ID: " + patientID, JOptionPane.INFORMATION_MESSAGE);
+    }
+}
     private String formatMedicalRecord(String medicalRecord) {
         return medicalRecord.replace("\n", ", ");
     }
@@ -116,13 +142,22 @@ public class MedicalRecords extends JFrame {
 
         String[] patient = patientsData.get(selectedRow);
         String patientID = patient[0];
-
-        // Here you can implement the logic to add a new medical record for the selected patient
-        // For example, you can open a new dialog for inputting the medical record details.
-        // Once you have the new medical record, you can append it to the existing medical record file.
-
+       
         JOptionPane.showMessageDialog(this, "Functionality to add a medical record is not implemented yet.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+  public void saveToFile() {
+    try {
+        FileWriter writer = new FileWriter("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\Medical_Record.txt");
+        for (MedicalRecord MR : MedicalRecords) {
+            writer.write(MR.getID() + "," + MR.getBloodPressure() + "," + MR.getBloodSugar() + "," + MR.getCholesterol() + "," + MR.getBloodType() + "," + MR.getAllergies() + "\n");
+        }
+        writer.close();
+    } catch (IOException e) {
+        System.out.println("Error saving to file.");
+    }
+}
+
+
 
     public static void main(String args[]) {
         try {
