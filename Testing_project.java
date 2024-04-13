@@ -14,6 +14,7 @@ public class Testing_project extends javax.swing.JFrame {
     private void initComponents() {
         JMenuItem jMenuItem5;
         JMenu jMenu4;
+        JMenu jMenu5;
         JPanel jPanel1;
 
         jMenuItem5 = new JMenuItem();
@@ -129,29 +130,53 @@ public class Testing_project extends javax.swing.JFrame {
         jMenu3.setFont(new java.awt.Font("Arial", 0, 18));
         jMenu3.setPreferredSize(new java.awt.Dimension(90, 25));
 
-        JMenuItem jMenuItem4 = new JMenuItem();
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        jMenu3.add(jMenuItem4);
+//        JMenuItem jMenuItem4 = new JMenuItem();
+//        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+//        jMenu3.add(jMenuItem4);
 
         jMenuBar1.add(jMenu3);
 
-        JMenu jMenu5 = new JMenu();
-        JMenu jMenu7 = new JMenu();
-        jMenu7.setText("Menu 7"); // Placeholder text for jMenu7
-        JMenuItem jMenuItem8 = new JMenuItem();
-        jMenu7.add(jMenuItem8);
+        jMenu5 = new JMenu();
+        
+        JMenuItem jMenuItem13 = new JMenuItem(); 
+        jMenuItem13.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem13.setText("Availabe Doctors");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem13);
 
-        jMenu5.add(jMenu7);
+        //jMenu5.add(jMenu7);
         jMenuBar1.add(jMenu5);
-
-        jMenu4.setText("Departments");
+        jMenuBar1.add(jMenu4);
+        
+       
+        jMenu4.setText("Appointmnets");
         jMenu4.setFont(new java.awt.Font("Arial", 0, 18));
         jMenu4.setPreferredSize(new java.awt.Dimension(110, 25));
+        jMenu4 = new JMenu();
+        
+        JMenuItem jMenuItem14 = new JMenuItem(); 
+        jMenuItem14.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem14.setText("Current Appointments");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem14);
+        
+        
+        jMenu5.setText("Departments");
+        jMenu5.setFont(new java.awt.Font("Arial", 0, 18));
+        jMenu5.setPreferredSize(new java.awt.Dimension(110, 25));
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        jMenu4.add(jMenuItem5);
+        jMenu5.add(jMenuItem5);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(jMenu5);
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -184,7 +209,7 @@ public class Testing_project extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {
         // Handle Bills menu item action
-        BillViewer billViewer = new BillViewer();
+        Bill billViewer = new Bill();
         billViewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close 
         billViewer.setVisible(true);
     }
@@ -200,6 +225,18 @@ public class Testing_project extends javax.swing.JFrame {
         MedicalRecords records = new MedicalRecords();
         records.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
         records.setVisible(true);
+    }
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Handle Medical Records menu item action
+        DocRec Dr = new DocRec();
+        Dr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
+        Dr.setVisible(true);
+    }
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Handle Medical Records menu item action
+        Appointment Ap = new Appointment();
+        Ap.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set close operation
+        Ap.setVisible(true);
     }
 public static void main(String args[]) {
         try {
@@ -225,6 +262,10 @@ public static void main(String args[]) {
                 String password = new String(loginForm.getPasswordField().getPassword()).trim();
 
                 if (UserAuthentication.authenticate(username, password)) {
+                    
+                    Bill billManager = new Bill();
+                    billManager.loadBillsFromFile("D:/Bills.txt");
+
                     // Authentication successful, open main application window
                     loginForm.setVisible(false); // Hide the login form
                     Testing_project mainApp = new Testing_project();
