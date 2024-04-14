@@ -1,0 +1,148 @@
+### Detailed JUnit Test for `Testing_project`
+
+```java
+import static org.junit.Assert.*;
+import org.junit.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+public class Testing_projectTest {
+
+    private Testing_project testingProject;
+
+    @Before
+    public void setUp() {
+        // Create a new instance of Testing_project before each test
+        testingProject = new Testing_project();
+        testingProject.setVisible(true); // Ensure the frame is visible for testing
+    }
+
+    @After
+    public void tearDown() {
+        // Clean up resources after each test (if needed)
+        testingProject.dispose();
+    }
+
+    @Test
+    public void testMenuItemsExistence() {
+        // Check the existence of important menu items
+        JMenuItem inventoryMenuItem = findMenuItemByName("Inventory");
+        JMenuItem patientsMenuItem = findMenuItemByName("Patients");
+        JMenuItem doctorsMenuItem = findMenuItemByName("Doctors");
+
+        assertNotNull("Inventory menu item should not be null", inventoryMenuItem);
+        assertNotNull("Patients menu item should not be null", patientsMenuItem);
+        assertNotNull("Doctors menu item should not be null", doctorsMenuItem);
+    }
+
+    @Test
+    public void testInventoryMenuItemAction() {
+        // Simulate clicking the Inventory menu item
+        JMenuItem inventoryMenuItem = findMenuItemByName("Inventory");
+        assertNotNull("Inventory menu item should not be null", inventoryMenuItem);
+
+        ActionListener[] actionListeners = inventoryMenuItem.getActionListeners();
+        assertTrue("Inventory menu item should have at least one action listener", actionListeners.length > 0);
+
+        // Create a mock action event to simulate the menu item click
+        ActionEvent mockEvent = new ActionEvent(
+                inventoryMenuItem,
+                ActionEvent.ACTION_PERFORMED,
+                inventoryMenuItem.getActionCommand()
+        );
+
+        // Trigger the action listener associated with the Inventory menu item
+        for (ActionListener listener : actionListeners) {
+            listener.actionPerformed(mockEvent);
+        }
+
+        // Check if the Inventory frame is visible
+        assertTrue("Inventory frame should be visible after clicking Inventory menu item", isFrameVisible("Inventory items"));
+    }
+
+    @Test
+    public void testPatientsMenuItemAction() {
+        // Simulate clicking the Patients menu item
+        JMenuItem patientsMenuItem = findMenuItemByName("Patients");
+        assertNotNull("Patients menu item should not be null", patientsMenuItem);
+
+        ActionListener[] actionListeners = patientsMenuItem.getActionListeners();
+        assertTrue("Patients menu item should have at least one action listener", actionListeners.length > 0);
+
+        // Create a mock action event to simulate the menu item click
+        ActionEvent mockEvent = new ActionEvent(
+                patientsMenuItem,
+                ActionEvent.ACTION_PERFORMED,
+                patientsMenuItem.getActionCommand()
+        );
+
+        // Trigger the action listener associated with the Patients menu item
+        for (ActionListener listener : actionListeners) {
+            listener.actionPerformed(mockEvent);
+        }
+
+        // Check if the Patients frame is visible
+        assertTrue("Patients frame should be visible after clicking Patients menu item", isFrameVisible("Registration"));
+    }
+
+    // Helper method to find a JMenuItem by its text
+    private JMenuItem findMenuItemByName(String name) {
+        JMenuBar menuBar = (JMenuBar) testingProject.getJMenuBar();
+        for (int i = 0; i < menuBar.getMenuCount(); i++) {
+            JMenu menu = menuBar.getMenu(i);
+            for (int j = 0; j < menu.getItemCount(); j++) {
+                JMenuItem menuItem = menu.getItem(j);
+                if (menuItem != null && menuItem.getText().equals(name)) {
+                    return menuItem;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Helper method to check if a JFrame with a specific title is visible
+    private boolean isFrameVisible(String title) {
+        for (java.awt.Window window : java.awt.Window.getWindows()) {
+            if (window instanceof JFrame && window.isVisible() && window.getTitle().equals(title)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+### Detailed Test Explanation
+
+- **Setup (`setUp()`)**:
+  - Initializes a new instance of `Testing_project` before each test.
+  - Makes sure that the `Testing_project` frame is visible (`setVisible(true)`) for accurate testing.
+
+- **Tear Down (`tearDown()`)**:
+  - Disposes of the `Testing_project` instance after each test to release resources.
+
+- **Test Methods**:
+  - **`testMenuItemsExistence()`**:
+    - Verifies that important menu items (`Inventory`, `Patients`, `Doctors`) exist and are not `null`.
+
+  - **`testInventoryMenuItemAction()`**:
+    - Simulates clicking the `Inventory` menu item and checks if the corresponding `Inventory items` frame becomes visible.
+
+  - **`testPatientsMenuItemAction()`**:
+    - Simulates clicking the `Patients` menu item and checks if the `Registration` frame becomes visible.
+
+- **Helper Methods**:
+  - **`findMenuItemByName(String name)`**:
+    - Searches through the `JMenuBar` to find a `JMenuItem` by its text.
+
+  - **`isFrameVisible(String title)`**:
+    - Checks if any `JFrame` with a specific title is visible.
+
+### Running the Detailed Tests
+
+You can run these detailed JUnit tests using your IDE's integrated test runner or through your build tool (e.g., Maven, Gradle) configured with JUnit. Ensure that the necessary dependencies are correctly set up for JUnit testing.
+
+These tests provide a more comprehensive validation of the `Testing_project` class's behavior, covering menu item actions and frame visibility. You can further extend these tests to include additional scenarios and edge cases based on your application's requirements.
