@@ -1,3 +1,4 @@
+package com.mycompany.testing_project;
 public class DepartmentDetails {
     private String departmentName;
     private String location;
