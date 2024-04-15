@@ -1,41 +1,57 @@
 package com.mycompany.testing_project;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 
 
 public class Department extends JFrame {
-    private String departmentName;
-    private List<Patient> patients;
+    private List<DepartmentDetails> departmentDetailsList;
+    private List<PatientInfo> patients;
+    private List<Service> services;
     private Bill billManager; // Reference to the bill manager
-    private ArrayList<String[]> patientsData; // To hold patient records
-    private ArrayList<String[]> servicesData; // To hold service records
 
-    public Department(String departmentName) {
-        this.departmentName = departmentName;
+    public Department() {
+        this.departmentDetailsList = new ArrayList<>();
         this.patients = new ArrayList<>();
+        this.services = new ArrayList<>();
         this.billManager = new Bill(); // Initialize Bill manager for the department
-        this.patientsData = loadPatientsData(); // Load patients data for the department
-        this.servicesData = loadServicesData(); // Load services data for the department
     }
 
-   
-    // Add a patient to the department
-    public void addPatient(Patient patient) {
+    // Add a department with its details to the list
+    public void addDepartment(DepartmentDetails departmentDetails) {
+        departmentDetailsList.add(departmentDetails);
+    }
+
+    // Remove a department from the list
+    public void removeDepartment(DepartmentDetails departmentDetails) {
+        departmentDetailsList.remove(departmentDetails);
+    }
+
+    // Method to add a patient to the department
+    public void addPatient(PatientInfo patient) {
         patients.add(patient);
     }
 
-    // Remove a patient from the department
-    public void removePatient(Patient patient) {
+    // Method to remove a patient from the department
+    public void removePatient(PatientInfo patient) {
         patients.remove(patient);
+    }
+
+    // Method to add a service to the department
+    public void addService(Service service) {
+        services.add(service);
+    }
+
+    // Method to remove a service from the department
+    public void removeService(Service service) {
+        services.remove(service);
     }
 
     // Method to add a bill for a patient in the department
@@ -48,53 +64,23 @@ public class Department extends JFrame {
         billManager.saveBills(fileName);
     }
 
-    // Display patient bills for the selected patient
+    // Method to display patient bills for the selected patient
     public void displayPatientBills(String patientID, JTable table) {
         billManager.displayPatientBills(patientID, table);
     }
 
-    // Load patients data from file
-    private ArrayList<String[]> loadPatientsData() {
-        ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("patients.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] patientInfo = line.split("\n"); // Assuming each patient's info is separated by a newline
-                data.add(patientInfo);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error loading patient data: " + e.getMessage());
-        }
-        return data;
-    }
-
-    // Load services data from file
-    private ArrayList<String[]> loadServicesData() {
-        ArrayList<String[]> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("D:/services.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                data.add(parts);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error loading services data: " + e.getMessage());
-        }
-        return data;
-    }
-
-    // Display patients data in a table
+    // Method to display patients data in a table
     public void displayPatientsData(JTable table) {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Patient ID");
         model.addColumn("Patient Name");
-        for (String[] patient : patientsData) {
-            model.addRow(new Object[]{patient[0], patient[1]});
+        for (PatientInfo patient : patients) {
+            model.addRow(new Object[]{patient.getPatientID(), patient.getPatientName()});
         }
         table.setModel(model);
     }
 
-    // Display services data in a table
+    // Method to display services data in a table
     public void displayServicesData(JTable table) {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Service ID");
@@ -104,31 +90,74 @@ public class Department extends JFrame {
         model.addColumn("Patient Name");
         model.addColumn("Service Charges");
 
-        for (String[] service : servicesData) {
-            model.addRow(service);
+        for (Service service : services) {
+            model.addRow(new Object[]{service.getServiceId(), service.getServiceName(), service.getServiceDate(), service.getPatientId(), service.getPatientName(), service.getServiceCharges()});
         }
 
         table.setModel(model);
     }
 
-    // Method to add a new service
-    public void addService(String serviceName, String serviceDate, String patientID, String patientName, String serviceCharges) {
-        String[] service = {serviceName, serviceDate, patientID, patientName, serviceCharges};
-        servicesData.add(service);
-        saveServicesData(servicesData);
+    // Method to load patients data from file
+    public void loadPatientsData(String fileName) {
+        patients.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] patientInfo = line.split(",");
+                if (patientInfo.length >= 10) {
+                    PatientInfo patient = new PatientInfo(
+                            Integer.parseInt(patientInfo[0]),     // Patient ID
+                            patientInfo[1],                        // Patient Name
+                            patientInfo[2],                        // Father Name
+                            patientInfo[3],                        // Email
+                            Integer.parseInt(patientInfo[4]),      // Age
+                            patientInfo[5],                        // Gender
+                            patientInfo[6],                        // Blood Group
+                            patientInfo[7],                        // Address
+                           Long.parseLong( patientInfo[8])                        // Contact Number
+                                                    // Remarks
+                    );
+                    patients.add(patient);
+                } else {
+                    System.err.println("Invalid patient data: " + line);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error loading patient data: " + e.getMessage());
+        }
     }
 
-    // Method to delete a service
-    public void deleteService(int index) {
-        servicesData.remove(index);
-        saveServicesData(servicesData);
+    // Method to load services data from file
+    public void loadServicesData(String fileName) {
+        services.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 6) {
+                    int serviceId = Integer.parseInt(parts[0]);
+                    String serviceName = parts[1];
+                    // Parse date from parts[2], assuming it's in a specific format
+                    // Example: Date serviceDate = new SimpleDateFormat("yyyy-MM-dd").parse(parts[2]);
+                    int patientId = Integer.parseInt(parts[3]);
+                    String patientName = parts[4];
+                    double serviceCharges = Double.parseDouble(parts[5]);
+                    Service service = new Service(serviceId, serviceName, null, patientId, patientName, serviceCharges);
+                    services.add(service);
+                } else {
+                    System.err.println("Invalid service data: " + line);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error loading services data: " + e.getMessage());
+        }
     }
 
-    // Save services data to file
-    private void saveServicesData(ArrayList<String[]> data) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/services.txt"))) {
-            for (String[] service : data) {
-                String line = String.join(",", service);
+    // Method to save services data to file
+    public void saveServicesData(String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Service service : services) {
+                String line = service.getServiceId() + "," + service.getServiceName() + "," + service.getServiceDate() + "," + service.getPatientId() + "," + service.getPatientName() + "," + service.getServiceCharges();
                 writer.write(line);
                 writer.newLine();
             }
@@ -136,5 +165,4 @@ public class Department extends JFrame {
             JOptionPane.showMessageDialog(null, "Error saving services data: " + e.getMessage());
         }
     }
-    
 }
