@@ -1,3 +1,4 @@
+package com.mycompany.testing_project;
 public class PatientInfo {
     private int patientID;
     private String patientName;
