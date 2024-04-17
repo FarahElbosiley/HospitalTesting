@@ -129,7 +129,6 @@ public class Registration extends JFrame {
         btnDelete.addActionListener(evt -> clearFields());
         btnSave.addActionListener(evt -> savePatientInfo());
     }
-
     private void savePatientInfo() {
         // Get input values from components
         String id = txtId.getText().trim();
@@ -148,32 +147,64 @@ public class Registration extends JFrame {
             return; // Exit the method if any required field is empty
         }
 
-        // Format patient information as CSV-like data
-        String patientInfo = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-                id, name, fname, email, age, gender, bloodGroup, address, contact);
-
-        BufferedWriter writer = null;
+        // Validate ID and Age as integers
         try {
-            // Open file in append mode
-            writer = new BufferedWriter(new FileWriter("D:/patient.txt", true));
-            writer.write(patientInfo);
-            writer.newLine(); // Add newline for the next entry
+            int parsedId = Integer.parseInt(id);
+            int parsedAge = Integer.parseInt(age);
 
-            JOptionPane.showMessageDialog(this, "Patient information saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            clearFields(); // Clear input fields after successful save
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error saving patient information!", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } finally {
-            // Always close the writer in finally block to ensure resources are released
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            // Validate name format
+            if (!isValidName(name) || !isValidName(fname)) {
+                JOptionPane.showMessageDialog(this, "Please enter valid names (letters only).", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validate email format
+            if (!isValidEmail(email)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid email address.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Additional validation can be done here, such as checking age or ID ranges
+
+            // Format patient information as CSV-like data
+            String patientInfo = String.format("%s,%s,%s,%s,%d,%s,%s,%s,%s\n",
+                    id, name, fname, email, parsedAge, gender, bloodGroup, address, contact);
+
+            BufferedWriter writer = null;
+            try {
+                // Open file in append mode
+                writer = new BufferedWriter(new FileWriter("D:/patient.txt", true));
+                writer.write(patientInfo);
+                writer.newLine(); // Add newline for the next entry
+
+                JOptionPane.showMessageDialog(this, "Patient information saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                clearFields(); // Clear input fields after successful save
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error saving patient information!", "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            } finally {
+                // Always close the writer in finally block to ensure resources are released
+                if (writer != null) {
+                    try {
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numeric values for ID and Age.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    // Helper method to validate name format (letters only)
+    private boolean isValidName(String name) {
+        return name.matches("[a-zA-Z]+");
+    }
+
+    // Helper method to validate email format
+    private boolean isValidEmail(String email) {
+        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 
     private void clearFields() {
