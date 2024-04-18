@@ -19,26 +19,25 @@ public class Inventory extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
 
-        inventoryManager = new InventoryManager();
-
-        initializeComponents();
-        setupGUI();
-        addEventListeners();
+        initComponents();
+        setupUI();
+        addListeners();
 
         // Load inventory data from file when the application starts
         inventoryManager.loadInventoryFromFile("D:/inventory.txt");
         updateInventoryTable();
     }
 
-    private void initializeComponents() {
+    private void initComponents() {
         itemNameField = new JTextField(20);
         quantityField = new JTextField(10);
         addButton = new JButton("Add Item");
         saveButton = new JButton("Save Inventory");
         inventoryTable = new JTable();
+        inventoryManager = new InventoryManager();
     }
 
-    private void setupGUI() {
+    private void setupUI() {
         JPanel inputPanel = new JPanel(new FlowLayout());
         inputPanel.add(new JLabel("Item Name:"));
         inputPanel.add(itemNameField);
@@ -54,7 +53,7 @@ public class Inventory extends JFrame {
         add(tableScrollPane, BorderLayout.CENTER);
     }
 
-    private void addEventListeners() {
+    private void addListeners() {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -88,4 +87,3 @@ public class Inventory extends JFrame {
         });
     }
 }
-
