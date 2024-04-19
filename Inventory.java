@@ -91,8 +91,8 @@ public class Inventory extends JFrame {
 
         inventoryTable.setModel(model);
     }
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 
     private void saveInventoryToFile(String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
@@ -134,7 +134,7 @@ public class Inventory extends JFrame {
             }
         });
     }
->>>>>>> 4aff3ad87125a5e4634a8cd897e319c356a5ee38
+//>>>>>>> 4aff3ad87125a5e4634a8cd897e319c356a5ee38
 }
 //    public static void main(String[] args) {
 //        SwingUtilities.invokeLater(new Runnable() {

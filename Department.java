@@ -61,7 +61,7 @@ public class Department extends JFrame {
 
     // Method to save bills for patients in the department
     public void saveBills(String fileName) {
-        billManager.saveBills(fileName);
+       // billManager.saveBills(fileName);
     }
 
     // Method to display patient bills for the selected patient
@@ -142,7 +142,7 @@ public class Department extends JFrame {
                     int patientId = Integer.parseInt(parts[3]);
                     String patientName = parts[4];
                     double serviceCharges = Double.parseDouble(parts[5]);
-                    Service service = new Service(serviceId, serviceName, null, patientId, patientName, serviceCharges);
+                    Service service = new Service(serviceId, serviceName, patientName, patientId, patientName, serviceCharges);
                     services.add(service);
                 } else {
                     System.err.println("Invalid service data: " + line);
