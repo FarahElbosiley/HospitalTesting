@@ -1,10 +1,7 @@
-1,120/80,110,Normal,O-,Yes
-2,110/60,100,Normal,A+,No
-3,140/90,160,High,B+,Yes
-4,160/40,95,Low,AB-,No
+3,140/90,123,Normal,A,Yes
 5,130/85,250,High,O+,Yes
-6,200/90,80,Normal,A-,No
 7,150/95,140,,B+,Yes
 8,125/80,120,Low,Normal,No
 9,155/60,110,Low,O-,Yes
 10,135/85,150,Normal,A+,Yes
+11,123,123,High,A,NO

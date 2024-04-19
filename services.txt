@@ -1,10 +1,10 @@
-111,Checkup,2024-04-01,1,Jack Thompson,100.00
-222,X-Ray,2024-04-03,2,Samantha Miller,150.00
-333,Blood Test,2024-04-02,3,Christopher Lee,80.00
-444,Medication,2024-04-04,4,Emma Garcia,50.00
-555,Dental Cleaning,2024-04-05,5,Andrew Wilson,120.00
-666,Physical Therapy,2024-04-06,6,Lisa Rodriguez,200.00
-777,Ultrasound,2024-04-07,7,Matthew Young,180.00
-888,CT Scan,2024-04-08,8,Sophia Hernandez,250.00
-999,Electrocardiogram,2024-04-09,9,Ryan Martinez,90.00
-123,Endoscopy,2024-04-10,10,Julia Davis,300.00
+111,Checkup,null,1,null,100.0
+222,X-Ray,null,2,null,150.0
+333,Blood Test,null,3,null,80.0
+444,Medication,null,4,null,50.0
+555,Dental Cleaning,null,5,null,120.0
+666,Physical Therapy,null,6,null,200.0
+777,Ultrasound,null,7,null,180.0
+888,CT Scan,null,8,null,250.0
+999,Electrocardiogram,null,9,null,90.0
+123,Endoscopy,null,10,null,300.0

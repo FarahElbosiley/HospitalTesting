@@ -1,4 +1,3 @@
-101,Dr. John Doe,1,Cardiology
 102,Dr. Jane Smith,2,Neurology
 103,Dr. Michael Johnson,3,Orthopedics
 104,Dr. Emily Brown,1,Cardiology

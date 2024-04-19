@@ -27,6 +27,17 @@ public class Appointments {
         return departmentName;
     }
 
-   
+   public void setAppointmentId(int appointmentId) {
+    this.appointmentId = appointmentId;
+}
+
+public void setDoctorName(String doctorName) {
+    this.doctorName = doctorName;
+}
+
+public void setDepartmentName(String departmentName) {
+    this.departmentName = departmentName;
+}
+
    
 }

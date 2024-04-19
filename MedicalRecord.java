@@ -43,4 +43,28 @@ public class MedicalRecord {
     public String getAllergies() {
         return allergies;
     }
+    public void setID(int ID) {
+    this.ID = ID;
+}
+
+public void setBloodPressure(String bloodPressure) {
+    this.bloodPressure = bloodPressure;
+}
+
+public void setBloodSugar(String bloodSugar) {
+    this.bloodSugar = bloodSugar;
+}
+
+public void setCholesterol(String cholesterol) {
+    this.cholesterol = cholesterol;
+}
+
+public void setBloodType(String bloodType) {
+    this.bloodType = bloodType;
+}
+
+public void setAllergies(String allergies) {
+    this.allergies = allergies;
+}
+
 }
