@@ -1,5 +1,5 @@
 // Patient.java
-package com.mycompany.mavenproject4;
+package com.mycompany.testing_project;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
