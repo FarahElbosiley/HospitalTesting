@@ -1,34 +1,138 @@
 package com.mycompany.testing_project;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-
-
 
 public class Department extends JFrame {
-    private List<DepartmentDetails> departmentDetailsList;
     private List<PatientInfo> patients;
     private List<Service> services;
-    private Bill billManager; // Reference to the bill manager
+    private List<DocRec> doctors;
+    private Bill billManager;
+
+    private JTable patientsTable;
+    private JTable servicesTable;
+    private JTable doctorsTable;
+    private JButton loadPatientsButton;
+    private JButton loadServicesButton;
+    private JButton loadDoctorsButton;
+    private JTextField departmentNumberField;
+    private JButton showPatientsButton;
+    private JButton showServicesButton;
+    private JButton showDoctorsButton;
 
     public Department() {
-        this.departmentDetailsList = new ArrayList<>();
-        this.patients = new ArrayList<>();
-        this.services = new ArrayList<>();
-        this.billManager = new Bill(); // Initialize Bill manager for the department
+        setTitle("Department Management");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        patients = new ArrayList<>();
+        services = new ArrayList<>();
+        doctors = new ArrayList<>();
+        billManager = new Bill();
+
+        initComponents();
+        loadPatientsData("D:/patients.txt");
+        loadServicesData("D:/services.txt");
+        loadDoctorsData("D:/doctors.txt");
+        displayPatientsData();
+        displayServicesData();
+        displayDoctorsData();
     }
 
-    // Add a department with its details to the list
-    public void addDepartment(DepartmentDetails departmentDetails) {
-        departmentDetailsList.add(departmentDetails);
+    private void initComponents() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
+        // Create buttons
+        loadPatientsButton = new JButton("Load Patients");
+        loadServicesButton = new JButton("Load Services");
+        loadDoctorsButton = new JButton("Load Doctors");
+        showPatientsButton = new JButton("Show Patients");
+        showServicesButton = new JButton("Show Services");
+        showDoctorsButton = new JButton("Show Doctors");
+
+        // Create text field for department number
+        departmentNumberField = new JTextField(10);
+
+        // Add action listeners to buttons
+        loadPatientsButton.addActionListener(e -> {
+            loadPatientsData("D:/patients.txt");
+            displayPatientsData();
+        });
+
+        loadServicesButton.addActionListener(e -> {
+            loadServicesData("D:/services.txt");
+            displayServicesData();
+        });
+
+        loadDoctorsButton.addActionListener(e -> {
+            loadDoctorsData("D:/doctors.txt");
+            displayDoctorsData();
+        });
+
+        showPatientsButton.addActionListener(e -> {
+            String departmentNumber = departmentNumberField.getText();
+            if (!departmentNumber.isEmpty()) {
+                displayPatientsByDepartment(departmentNumber);
+            }
+        });
+
+        showServicesButton.addActionListener(e -> {
+            String departmentNumber = departmentNumberField.getText();
+            if (!departmentNumber.isEmpty()) {
+                displayServicesByDepartment(departmentNumber);
+            }
+        });
+
+        showDoctorsButton.addActionListener(e -> {
+            String departmentNumber = departmentNumberField.getText();
+            if (!departmentNumber.isEmpty()) {
+                displayDoctorsByDepartment(departmentNumber);
+            }
+        });
+
+        // Create tables
+        patientsTable = new JTable();
+        servicesTable = new JTable();
+        doctorsTable = new JTable();
+
+        // Add tables to scroll panes
+        JScrollPane patientsScrollPane = new JScrollPane(patientsTable);
+        JScrollPane servicesScrollPane = new JScrollPane(servicesTable);
+        JScrollPane doctorsScrollPane = new JScrollPane(doctorsTable);
+
+        // Add buttons and text field to a panel
+        JPanel controlPanel = new JPanel();
+        controlPanel.add(new JLabel("Department Number:"));
+        controlPanel.add(departmentNumberField);
+        controlPanel.add(showPatientsButton);
+        controlPanel.add(showServicesButton);
+        controlPanel.add(showDoctorsButton);
+
+        // Add components to the main panel
+        mainPanel.add(loadPatientsButton, BorderLayout.NORTH);
+        mainPanel.add(patientsScrollPane, BorderLayout.WEST);
+        mainPanel.add(loadServicesButton, BorderLayout.NORTH);
+        mainPanel.add(servicesScrollPane, BorderLayout.CENTER);
+        mainPanel.add(loadDoctorsButton, BorderLayout.NORTH);
+        mainPanel.add(doctorsScrollPane, BorderLayout.EAST);
+        mainPanel.add(controlPanel, BorderLayout.SOUTH);
+
+        // Set the main panel as the content pane of the frame
+        setContentPane(mainPanel);
     }
 
+<<<<<<< HEAD
     // Remove a department from the list
     public void removeDepartment(DepartmentDetails departmentDetails) {
         departmentDetailsList.remove(departmentDetails);
@@ -99,12 +203,15 @@ public class Department extends JFrame {
 
     // Method to load patients data from file
     public void loadPatientsData(String fileName) {
+=======
+    private void loadPatientsData(String fileName) {
+>>>>>>> 1874b63a083e61a5d184ff8435e138241b9a7536
         patients.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] patientInfo = line.split(",");
-                if (patientInfo.length >= 10) {
+                if (patientInfo.length >= 9) {
                     PatientInfo patient = new PatientInfo(
                             Integer.parseInt(patientInfo[0]),     // Patient ID
                             patientInfo[1],                        // Patient Name
@@ -114,8 +221,7 @@ public class Department extends JFrame {
                             patientInfo[5],                        // Gender
                             patientInfo[6],                        // Blood Group
                             patientInfo[7],                        // Address
-                           Long.parseLong( patientInfo[8])                        // Contact Number
-                                                    // Remarks
+                            Long.parseLong(patientInfo[8])        // Contact Number
                     );
                     patients.add(patient);
                 } else {
@@ -127,8 +233,7 @@ public class Department extends JFrame {
         }
     }
 
-    // Method to load services data from file
-    public void loadServicesData(String fileName) {
+    private void loadServicesData(String fileName) {
         services.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -153,16 +258,112 @@ public class Department extends JFrame {
         }
     }
 
-    // Method to save services data to file
-    public void saveServicesData(String fileName) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (Service service : services) {
-                String line = service.getServiceId() + "," + service.getServiceName() + "," + service.getServiceDate() + "," + service.getPatientId() + "," + service.getPatientName() + "," + service.getServiceCharges();
-                writer.write(line);
-                writer.newLine();
+    private void loadDoctorsData(String fileName) {
+        doctors.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] doctorInfo = line.split(",");
+                if (doctorInfo.length >= 4) {
+                    DocRec doctor = new DocRec(
+                            Integer.parseInt(doctorInfo[0]),     // Doctor ID
+                            doctorInfo[1],                        // Doctor Name
+                            doctorInfo[2],                        // Specialty
+                            doctorInfo[3]                         // Department Number
+                    );
+                    doctors.add(doctor);
+                } else {
+                    System.err.println("Invalid doctor data: " + line);
+                }
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error saving services data: " + e.getMessage());
+        } catch (IOException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error loading doctors data: " + e.getMessage());
         }
+    }
+
+    private void displayPatientsData() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Patient ID");
+        model.addColumn("Patient Name");
+        for (PatientInfo patient : patients) {
+            model.addRow(new Object[]{patient.getPatientID(), patient.getPatientName()});
+        }
+        patientsTable.setModel(model);
+    }
+
+    private void displayServicesData() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Service ID");
+        model.addColumn("Service Name");
+        model.addColumn("Service Date");
+        model.addColumn("Patient ID");
+        model.addColumn("Patient Name");
+        model.addColumn("Service Charges");
+        for (Service service : services) {
+            model.addRow(new Object[]{service.getServiceId(), service.getServiceName(), service.getServiceDate(), service.getPatientId(), service.getPatientName(), service.getServiceCharges()});
+        }
+        servicesTable.setModel(model);
+    }
+
+    private void displayDoctorsData() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Doctor ID");
+        model.addColumn("Doctor Name");
+        model.addColumn("Specialty");
+        model.addColumn("Department Number");
+        for (DocRec doctor : doctors) {
+            model.addRow(new Object[]{doctor.getDoctorID(), doctor.getDoctorName(), doctor.getSpecialty(), doctor.getDepartmentNumber()});
+        }
+        doctorsTable.setModel(model);
+    }
+
+    private void displayPatientsByDepartment(String departmentNumber) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Patient ID");
+        model.addColumn("Patient Name");
+        for (PatientInfo patient : patients) {
+            if (patient.getDepartmentNumber().equals(departmentNumber)) {
+                model.addRow(new Object[]{patient.getPatientID(), patient.getPatientName()});
+            }
+        }
+        patientsTable.setModel(model);
+    }
+
+    private void displayServicesByDepartment(String departmentNumber) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Service ID");
+        model.addColumn("Service Name");
+        model.addColumn("Service Date");
+        model.addColumn("Patient ID");
+        model.addColumn("Patient Name");
+        model.addColumn("Service Charges");
+        for (Service service : services) {
+            if (service.getDepartmentNumber().equals(departmentNumber)) {
+                model.addRow(new Object[]{service.getServiceId(), service.getServiceName(), service.getServiceDate(), service.getPatientId(), service.getPatientName(), service.getServiceCharges()});
+            }
+        }
+        servicesTable.setModel(model);
+    }
+
+    private void displayDoctorsByDepartment(String departmentNumber) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Doctor ID");
+        model.addColumn("Doctor Name");
+        model.addColumn("Specialty");
+        model.addColumn("Department Number");
+        for (DocRec doctor : doctors) {
+            if (doctor.getDepartmentNumber().equals(departmentNumber)) {
+                model.addRow(new Object[]{doctor.getDoctorID(), doctor.getDoctorName(), doctor.getSpecialty(), doctor.getDepartmentNumber()});
+            }
+        }
+        doctorsTable.setModel(model);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new Department().setVisible(true);
+            }
+        });
     }
 }

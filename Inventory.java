@@ -1,21 +1,17 @@
 package com.mycompany.testing_project;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Inventory extends JFrame {
-    private Map<String, Integer> inventory;
+    private InventoryManager inventoryManager;
 
     private JTextField itemNameField;
     private JTextField quantityField;
     private JButton addButton;
-    private JButton saveButton; // New button for saving inventory data
+    private JButton saveButton;
     private JTable inventoryTable;
 
     public Inventory() {
@@ -23,39 +19,48 @@ public class Inventory extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
 
-        // Initialize inventory
-        inventory = new HashMap<>();
+        initComponents();
+        setupUI();
+        addListeners();
 
-        // Components
+        // Load inventory data from file when the application starts
+        inventoryManager.loadInventoryFromFile("D:/inventory.txt");
+        updateInventoryTable();
+    }
+
+    private void initComponents() {
         itemNameField = new JTextField(20);
         quantityField = new JTextField(10);
         addButton = new JButton("Add Item");
-        saveButton = new JButton("Save Inventory"); // Initialize save button
+        saveButton = new JButton("Save Inventory");
         inventoryTable = new JTable();
+        inventoryManager = new InventoryManager();
+    }
 
-        // Layout
+    private void setupUI() {
         JPanel inputPanel = new JPanel(new FlowLayout());
         inputPanel.add(new JLabel("Item Name:"));
         inputPanel.add(itemNameField);
         inputPanel.add(new JLabel("Quantity:"));
         inputPanel.add(quantityField);
         inputPanel.add(addButton);
-        inputPanel.add(saveButton); // Add save button
+        inputPanel.add(saveButton);
 
         JScrollPane tableScrollPane = new JScrollPane(inventoryTable);
 
         setLayout(new BorderLayout());
         add(inputPanel, BorderLayout.NORTH);
         add(tableScrollPane, BorderLayout.CENTER);
+    }
 
-        // Event handling
+    private void addListeners() {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String itemName = itemNameField.getText();
                 int quantity = Integer.parseInt(quantityField.getText());
 
-                addItemToInventory(itemName, quantity);
+                inventoryManager.addItemToInventory(itemName, quantity);
                 updateInventoryTable();
             }
         });
@@ -63,24 +68,13 @@ public class Inventory extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveInventoryToFile("D:/inventory.txt");
+                inventoryManager.saveInventoryToFile("D:/inventory.txt");
             }
         });
-
-        // Load inventory data from file when the application starts
-        loadInventoryFromFile("D:/inventory.txt");
-    }
-
-    private void addItemToInventory(String itemName, int quantity) {
-        if (inventory.containsKey(itemName)) {
-            int currentQuantity = inventory.get(itemName);
-            inventory.put(itemName, currentQuantity + quantity);
-        } else {
-            inventory.put(itemName, quantity);
-        }
     }
 
     private void updateInventoryTable() {
+<<<<<<< HEAD
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Item Name");
         model.addColumn("Quantity");
@@ -123,6 +117,9 @@ public class Inventory extends JFrame {
         } catch (IOException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Error loading inventory: " + e.getMessage());
         }
+=======
+        inventoryTable.setModel(inventoryManager.getInventoryTableModel());
+>>>>>>> 1874b63a083e61a5d184ff8435e138241b9a7536
     }
 
     public static void main(String[] args) {
@@ -134,15 +131,8 @@ public class Inventory extends JFrame {
             }
         });
     }
+<<<<<<< HEAD
 //>>>>>>> 4aff3ad87125a5e4634a8cd897e319c356a5ee38
+=======
+>>>>>>> 1874b63a083e61a5d184ff8435e138241b9a7536
 }
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                HospitalInventoryGUI inventoryGUI = new HospitalInventoryGUI();
-//                inventoryGUI.setVisible(true);
-//            }
-//        });
-//    }
-//}

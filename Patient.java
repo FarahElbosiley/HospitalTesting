@@ -13,13 +13,13 @@ public class Patient extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
 
     private ArrayList<PatientInfo> patientsList; // To hold patient records
-    private Bill billManager; // Add Bill manager
+    private BillGUI billManager; // Add Bill manager
 
     public Patient() {
         initComponents();
         loadPatientsData();
         displayPatientsData();
-        billManager = new Bill(); // Initialize Bill manager
+        billManager = new BillGUI(); // Initialize Bill manager
     }
 
     private void initComponents() {
@@ -28,11 +28,11 @@ public class Patient extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
+//        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+//            public void mouseClicked(java.awt.event.MouseEvent evt) {
+//                jTable1MouseClicked(evt);
+//            }
+//        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -48,14 +48,14 @@ public class Patient extends javax.swing.JFrame {
 
         pack();
     }
-
-    private void displayPatientBills(String patientID) {
-        billManager.displayPatientBills(patientID, jTable1);
-    }
+//
+//    private void displayPatientBills() {
+//        billManager.displayPatientBills(patientID, jTable1);
+//    }
 
     private void loadPatientsData() {
         patientsList = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\OneDrive\\Documents\\Desktop\\Programming 2\\HMS_Test\\src\\com\\mycompany\\testing_project\\patient.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:/patient.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] patientInfo = line.split(",");
@@ -87,14 +87,14 @@ public class Patient extends javax.swing.JFrame {
         jTable1.setModel(model);
     }
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
-        int row = jTable1.getSelectedRow();
-        if (row >= 0 && row < patientsList.size()) {
-            PatientInfo patient = patientsList.get(row);
-            int patientID = patient.getPatientID();
-            // Convert patient ID to String
-            String patientIDString = String.valueOf(patientID);
-            displayPatientBills(patientIDString); // Display bills for selected patient
-        }
-    }
+//    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
+//        int row = jTable1.getSelectedRow();
+//        if (row >= 0 && row < patientsList.size()) {
+//            PatientInfo patient = patientsList.get(row);
+//            int patientID = patient.getPatientID();
+//            // Convert patient ID to String
+//            String patientIDString = String.valueOf(patientID);
+//            displayPatientBills(patientIDString); // Display bills for selected patient
+//        }
+//    }
 }
