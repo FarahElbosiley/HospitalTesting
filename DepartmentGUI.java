@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject4;
+package com.mycompany.testing_project;
 // DepartmentGUI.java
 import javax.swing.*;
 import java.awt.*;
