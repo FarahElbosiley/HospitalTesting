@@ -1,4 +1,0 @@
-admin,password123
-john_doe,secret321
-alice,pass456
-1,1
