@@ -1,4 +1,0 @@
-102,Dr. Jane Smith,2,Neurology
-103,Dr. Michael Johnson,3,Orthopedics
-104,Dr. Emily Brown,1,Cardiology
-105,Dr. David Lee,4,Oncology
