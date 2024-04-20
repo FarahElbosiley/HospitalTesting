@@ -1,4 +1,0 @@
-Bandages,50
-Syringes,100
-Gauze,200
-Medications,20
