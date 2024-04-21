@@ -63,14 +63,13 @@ class AppointmentTest {
 	 
 	@Test
     public void testLoadAppointmentsData_ValidInput() throws IOException {
-        // Arrange
+       
 		 
         String testFileName = "C:\\Users\\Malak\\Desktop\\TestApp.txt";
         
         AppointmentsGUI loader = new AppointmentsGUI();
         loader.appointments.clear();
-        
-        // Write appointment data to the test file
+       
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(testFileName))) {
             writer.write("1,Dr. John Doe,Cardiology\n");
             writer.write("2,Dr. Jane Smith,Neurology\n");
@@ -91,25 +90,16 @@ class AppointmentTest {
     }
 	 @Test
 	    public void testSaveToFile() throws IOException {
-	        // Arrange
+	      
 	        String testFileName = "C:\\Users\\Malak\\Desktop\\TestAPP2.txt";
 	        AppointmentsGUI loader = new AppointmentsGUI();
 	        loader.appointments.clear();
-
-	        // Create some sample appointments to save
 	        ArrayList<Appointments> appointments = new ArrayList<>();
 	        appointments.add(new Appointments(1, "Dr. John Doe", "Cardiology"));
 	        appointments.add(new Appointments(2, "Dr. Jane Smith", "Neurology"));
 	        appointments.add(new Appointments(3, "Dr. Michael Johnson", "Orthopedics"));
-
-	        // Set the appointments list in the loader
 	        loader.appointments = appointments;
-
-	        // Act
 	        loader.saveToFile();
-
-	        // Assert
-	        // Verify that the appointments were saved correctly by reading from the file
 	        try (BufferedReader reader = new BufferedReader(new FileReader(testFileName))) {
 	            String line;
 	            int count = 0;
