@@ -9,12 +9,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ServiceTest {
 
 	Services service;
+	 @BeforeAll
+	    public static void startMessage() {
+	        
+	        System.out.println("Starting tests...");
+	    }
+	    @AfterAll
+	    public static void EndMessage() {
+	      
+	        System.out.println("All tests have been executed and passed.");
+	    }
 
     @BeforeEach
     public void initial() {
