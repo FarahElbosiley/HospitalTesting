@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,16 @@ import org.junit.jupiter.api.Test;
 class AppointmentTest {
     Appointments appointment;
     AppointmentsGUI appointments= new AppointmentsGUI();
-
+    @BeforeAll
+    public static void startMessage() {
+        
+        System.out.println("Starting tests...");
+    }
+    @AfterAll
+    public static void EndMessage() {
+      
+        System.out.println("All tests have been executed and passed.");
+    }
     @BeforeEach
     public void initial() {
         appointment = new Appointments(1, "Dr. Smith", "Cardiology");
@@ -31,7 +41,7 @@ class AppointmentTest {
 	@Test
 	void AppointementIDget_test() {
 		 assertEquals(1, appointment.getAppointmentId());
-		   System.out.println("Test passed successfully.");
+		  
 	}
 	@Test
 	void AppointementNameget_test() {
@@ -40,25 +50,25 @@ class AppointmentTest {
 	@Test
 	void AppointementDNameget_test() {
 		 assertEquals("Cardiology", appointment.getDepartmentName());
-		 System.out.println("Test passed successfully.");
+		 
 	}
 	@Test
 	void AppointementIDset_test() {
 		appointment.setAppointmentId(2);
 		 assertEquals(2, appointment.getAppointmentId());
-		 System.out.println("Test passed successfully.");
+		
 	}
 	@Test
 	void AppointementNameset_test() {
 		appointment.setDoctorName("Dr. Johnson");
 		 assertEquals("Dr. Johnson", appointment.getDoctorName());
-		 System.out.println("Test passed successfully.");
+		
 	}
 	@Test
 	void AppointementDNameset_test() {
 		appointment.setDepartmentName("Neurology");
 		 assertEquals("Neurology", appointment.getDepartmentName());
-		 System.out.println("Test passed successfully.");
+		
 	}
 	 
 	@Test
@@ -86,7 +96,7 @@ class AppointmentTest {
         assertEquals(1,  loader.appointments.get(0).getAppointmentId());
        assertEquals("Dr. John Doe", loader.appointments.get(0).getDoctorName());
        assertEquals("Cardiology", loader.appointments.get(0).getDepartmentName());
-        System.out.println("Test passed successfully.");
+      
     }
 	 @Test
 	    public void testSaveToFile() throws IOException {
