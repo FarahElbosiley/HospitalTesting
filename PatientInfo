@@ -1,0 +1,127 @@
+public class PatientInfo {
+    private int patientID;
+    private String patientName;
+    private String fatherName;
+    private String email;
+    private int age;
+    private String gender;
+    private String bloodGroup;
+    private String address;
+    private long contactNo;
+
+    public PatientInfo(int patientID, String patientName, String fatherName, String email, int age, String gender, String bloodGroup, String address, long contactNo) {
+        // Validate inputs before saving
+        if (isValidPatientID(patientID)) {
+            this.patientID = patientID;
+        } else {
+            throw new IllegalArgumentException("Invalid patient ID");
+        }
+
+        if (isValidName(patientName)) {
+            this.patientName = patientName;
+        } else {
+            throw new IllegalArgumentException("Invalid patient name");
+        }
+
+        // Similar validations for other fields
+        this.fatherName = fatherName; // Assuming no validation needed for father's name
+        if (isValidEmail(email)) {
+            this.email = email;
+        } else {
+            throw new IllegalArgumentException("Invalid email address");
+        }
+
+        if (isValidAge(age)) {
+            this.age = age;
+        } else {
+            throw new IllegalArgumentException("Invalid age");
+        }
+
+            this.gender = gender;
+        
+            this.bloodGroup = bloodGroup;
+        
+
+        if (isValidAddress(address)) {
+            this.address = address;
+        } else {
+            throw new IllegalArgumentException("Invalid address");
+        }
+
+        if (isValidContactNo(contactNo)) {
+            this.contactNo = contactNo;
+        } else {
+            throw new IllegalArgumentException("Invalid contact number");
+        }
+    }
+
+    // Validation methods
+    private boolean isValidPatientID(int patientID) {
+        // Implement validation logic for patient ID
+        return patientID > 0; // Assuming patient ID must be positive
+    }
+
+    private boolean isValidName(String name) {
+        // Implement validation logic for patient name
+        return name != null && !name.trim().isEmpty();
+    }
+
+    private boolean isValidEmail(String email) {
+        // Implement validation logic for email
+        return email != null && email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$");
+    }
+
+    private boolean isValidAge(int age) {
+        // Implement validation logic for age
+        return age > 0 && age < 150; // Assuming realistic age range
+    }
+
+ 
+    private boolean isValidAddress(String address) {
+        // Implement validation logic for address
+        return address != null && !address.trim().isEmpty();
+    }
+
+    private boolean isValidContactNo(long contactNo) {
+        // Implement validation logic for contact number
+        // Example: Validate length, numeric characters only, etc.
+        return String.valueOf(contactNo).matches("\\d{10}"); // Assuming 10-digit contact number
+    }
+
+    // Getters for patient information
+    public int getPatientID() {
+        return patientID;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public long getContactNo() {
+        return contactNo;
+    }
+}
