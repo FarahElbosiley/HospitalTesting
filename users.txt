@@ -1,0 +1,17 @@
+1,1
+admin,password123
+john_doe,secret321
+alice,pass456
+user1,password1
+user2,password2
+user3,secure123
+narwhal_lover,seaweed123
+space_explorer,rocket@321
+music_maestro,tuneMaster99
+gamer_geek,LevelUp2022
+nature_hiker,TrailBlazer22
+bookworm_reader,PageTurner88
+tech_whiz,CodeWizard007
+adventure_seeker,ExploreMore$
+happy_coder,Smile&Code
+ocean_dreamer,SunsetWave$
