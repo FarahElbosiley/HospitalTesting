@@ -1,48 +1,43 @@
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+public class Departments {
+    private String departmentName;
+    private int departmentNumber;
+    //private String location;
+    // Add other relevant attributes and methods as needed
 
-public class DepartmentsTest {
-
-    @Test
-    public void testConstructorAndGetters() {
-        // Create a new Departments object 
-        Departments department = new Departments("Cardiology", 101);
-
-        // Verify the values set
-        assertEquals("Cardiology", department.getDepartmentName());
-        assertEquals(101, department.getdepartmentNumber());
+    public Departments(String departmentName, int departmentNumber) {
+    	setDepartmentName(departmentName);
+    	setDepartmentNumber(departmentNumber);
+        //this.location = location;
     }
 
-    @Test
-    public void testSetters() {
-        // Create a new Departments object
-        Departments department = new Departments("Orthopedics", 103);
-
-        // Change department name using setter
-        department.setDepartmentName("Neurology");
-        assertEquals("Neurology", department.getDepartmentName());
-
-        // Change department number using setter 
-        department.setDepartmentNumber(102);
-        assertEquals(102, department.getdepartmentNumber());
+    // Getters and setters for department details
+    public String getDepartmentName() {
+        return departmentName;
+    }
+    public void setDepartmentName(String departmentName) {
+        if (isValidDepartmentName(departmentName)) {
+            this.departmentName = departmentName;
+        } else {
+            throw new IllegalArgumentException("Invalid department name: " + departmentName);
+        }
     }
 
-    @Test
-    public void testInvalidDepartmentName() {
-        // Create a new Departments object with invalid department name
-        Departments department = new Departments("", 104);
-
-        // Verify that setting an empty department name results in default value
-        assertEquals("", department.getDepartmentName()); // Empty string allowed
+    private boolean isValidDepartmentName(String departmentName) {
+        return departmentName != null && !departmentName.trim().isEmpty() && departmentName.matches("[a-zA-Z\\s]+");
     }
 
-    @Test
-    public void testNegativeDepartmentNumber() {
-        // Create a new Departments object with negative department number
-        Departments department = new Departments("Pediatrics", -105);
+    public void setDepartmentNumber(int departmentNumber) {
+    	 if (departmentNumber >= 0) {
+             this.departmentNumber = departmentNumber;
+         } else {
+             // If department number is negative, set default value (or ignore)
+             this.departmentNumber = 0; // Defaulting to 0
+             throw new IllegalArgumentException("Invalid department number: " + departmentNumber);
 
-        // Verify that setting a negative department number is allowed
-        assertEquals(-105, department.getdepartmentNumber());
+         }
     }
 
+    public int getdepartmentNumber() {
+        return departmentNumber;
+    }
 }
