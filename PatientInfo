@@ -9,7 +9,8 @@ public class PatientInfo {
     private String address;
     private long contactNo;
 
-    public PatientInfo(int patientID, String patientName, String fatherName, String email, int age, String gender, String bloodGroup, String address, long contactNo) {
+    public PatientInfo(int patientID, String patientName, String fatherName, String email, int age,
+    		String gender, String bloodGroup, String address, long contactNo) {
         // Validate inputs before saving
         if (isValidPatientID(patientID)) {
             this.patientID = patientID;
@@ -123,5 +124,63 @@ public class PatientInfo {
 
     public long getContactNo() {
         return contactNo;
+    }
+
+    public void setPatientName(String patientName) {
+        if (isValidName(patientName)) {
+            this.patientName = patientName;
+        } else {
+            throw new IllegalArgumentException("Invalid patient name");
+        }
+    }
+
+    public void setFatherName(String fatherName) {
+        // Assuming no validation needed for father's name
+        this.fatherName = fatherName;
+    }
+
+    public void setEmail(String email) {
+        if (isValidEmail(email)) {
+            this.email = email;
+        } else {
+            throw new IllegalArgumentException("Invalid email address");
+        }
+    }
+
+    public void setAge(int age) {
+        if (isValidAge(age)) {
+            this.age = age;
+        } else {
+            throw new IllegalArgumentException("Invalid age");
+        }
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public void setAddress(String address) {
+        if (isValidAddress(address)) {
+            this.address = address;
+        } else {
+            throw new IllegalArgumentException("Invalid address");
+        }
+    }
+
+    public void setContactNo(long contactNo) {
+        if (isValidContactNo(contactNo)) {
+            this.contactNo = contactNo;
+        } else {
+            throw new IllegalArgumentException("Invalid contact number");
+        }
+    }
+    @Override
+    public String toString() {
+        return String.format("%d, %s, %s, %s, %d, %s, %s, %s, %d",
+                patientID, patientName, fatherName, email, age, gender, bloodGroup, address, contactNo);
     }
 }
