@@ -13,7 +13,7 @@ public class Registration extends JFrame {
     private JButton btnUpdate, btnDelete, btnSave;
 
     private List<PatientInfo> patients = new ArrayList<>(); // List to hold patient data
-
+    
     public Registration() {
         initComponents();
         loadPatientsData(); // Load patient data from file upon form initialization
@@ -157,9 +157,9 @@ public class Registration extends JFrame {
             }
         });
     }
-
-    private void registerNewPatient() {
+    public void registerNewPatient() {
         try {
+            // Retrieve and validate patient data
             int patientID = Integer.parseInt(txtId.getText().trim());
             String patientName = txtName.getText().trim();
             String fatherName = txtFname.getText().trim();
@@ -170,21 +170,30 @@ public class Registration extends JFrame {
             String address = txtAdd.getText().trim();
             long contactNo = Long.parseLong(txtContact.getText().trim());
 
+            // Create a new PatientInfo object
             PatientInfo newPatient = new PatientInfo(patientID, patientName, fatherName, email, age, gender, bloodGroup, address, contactNo);
 
-            savePatientsToList(newPatient);
+            // Add the new patient to the list
+            patients.add(newPatient);
 
+            // Clear input fields after successful registration
             clearFields();
 
+            // Display success message
             JOptionPane.showMessageDialog(this, "Patient data added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Invalid input! Please enter valid data.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Handle number format errors (e.g., invalid integer or long input)
+            JOptionPane.showMessageDialog(this, "Invalid input! Please enter valid data for numeric fields.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IllegalArgumentException ex) {
+            // Handle illegal argument errors (e.g., invalid data for PatientInfo constructor)
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            // Handle other unexpected exceptions
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void loadPatientsData() {
+    public void loadPatientsData() {
         try (BufferedReader reader = new BufferedReader(new FileReader("D:/patients.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -198,9 +207,9 @@ public class Registration extends JFrame {
                     String bloodGroup = data[5].trim();
                     String gender = data[6].trim();
                     String address = data[7].trim();
-                    long contactNo = Long.parseLong(data[8].trim()); 
+                    long contactNo = Long.parseLong(data[8].trim());
 
-                    PatientInfo patient = new PatientInfo(id, name, fname, email, age, bloodGroup, gender, address, contactNo);
+                    PatientInfo patient = new PatientInfo(id, name, fname, email, age, gender, bloodGroup, address, contactNo);
                     patients.add(patient);
                 } else {
                     System.out.println("Invalid patient data format: " + line);
@@ -214,7 +223,7 @@ public class Registration extends JFrame {
         }
     }
 
-    private void savePatientsToFile() {
+    public void savePatientsToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/patients.txt"))) {
             for (PatientInfo patient : patients) {
                 writer.write(patient.toString());
@@ -226,7 +235,7 @@ public class Registration extends JFrame {
         }
     }
 
-    private void deletePatientInfo() {
+    public void deletePatientInfo() {
         try {
             int patientID = Integer.parseInt(txtId.getText().trim());
 
@@ -249,43 +258,94 @@ public class Registration extends JFrame {
         }
     }
 
-    private void updatePatientInfo() {
+    public void updatePatientInfo() {
         try {
             int patientID = Integer.parseInt(txtId.getText().trim());
-            boolean found = false;
+            PatientInfo patientToUpdate = null;
 
+            // Find the patient with the specified ID
             for (PatientInfo patient : patients) {
                 if (patient.getPatientID() == patientID) {
-                    patient.setPatientName(txtName.getText().trim());
-                    patient.setFatherName(txtFname.getText().trim());
-                    patient.setEmail(txtEmail.getText().trim());
-                    patient.setAge(Integer.parseInt(txtAge.getText().trim()));
-                    patient.setGender(cmbGender.getSelectedItem().toString());
-                    patient.setBloodGroup(cmbBG.getSelectedItem().toString());
-                    patient.setAddress(txtAdd.getText().trim());
-                    patient.setContactNo(Long.parseLong(txtContact.getText().trim()));
-
-                    JOptionPane.showMessageDialog(this, "Patient information updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    clearFields();
-                    found = true;
+                    patientToUpdate = patient;
                     break;
                 }
             }
 
-            if (!found) {
-                JOptionPane.showMessageDialog(this, "Patient not found with ID: " + patientID, "Error", JOptionPane.ERROR_MESSAGE);
+            // If patient not found, throw an exception
+            if (patientToUpdate == null) {
+                throw new IllegalArgumentException("Patient not found with ID: " + patientID);
             }
-        } catch (NumberFormatException ex) {
+
+            // Update patient's information
+            patientToUpdate.setPatientName(txtName.getText().trim());
+            patientToUpdate.setFatherName(txtFname.getText().trim());
+            patientToUpdate.setEmail(txtEmail.getText().trim());
+            patientToUpdate.setAge(Integer.parseInt(txtAge.getText().trim()));
+            patientToUpdate.setGender(cmbGender.getSelectedItem().toString());
+            patientToUpdate.setBloodGroup(cmbBG.getSelectedItem().toString());
+            patientToUpdate.setAddress(txtAdd.getText().trim());
+            patientToUpdate.setContactNo(Long.parseLong(txtContact.getText().trim()));
+
+            // Show success message
+            JOptionPane.showMessageDialog(this, "Patient information updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear input fields after updating
+            clearFields();
+
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid input! Please enter valid data.", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void savePatientsToList(PatientInfo newPatient) {
+    public void savePatientsToList(PatientInfo newPatient) {
         patients.add(newPatient);
     }
+    public List<PatientInfo> getPatients() {
+        return patients;
+    }
+ // Method to retrieve text from txtId JTextField
+    public JTextField getTxtId() {
+        return txtId;
+    }
+ // Method to retrieve text from txtName JTextField
+    public JTextField getTxtName() {
+        return txtName;
+    }
+    // Method to set the text of txtId JTextField
+    public void setText(String text) {
+        txtId.setText(text);
+    }
+    public JTextField getTxtFname() {
+        return txtFname;
+	}
+    public JTextField getTxtEmail() {
+        return txtEmail;
+	}
+    
+    public JTextField getTxtAge() {
+        return txtAge;
+    }
 
+    public JTextField getTxtAdd() {
+        return txtAdd;
+    }
+
+    public JTextField getTxtContact() {
+        return txtContact;
+    }
+
+    public JComboBox<String> getCmbBG() {
+        return cmbBG;
+    }
+
+    public JComboBox<String> getCmbGender() {
+        return cmbGender;
+    }
+    public JFrame getFrame() {
+        return this;
+    }
     private void clearFields() {
         txtId.setText("");
         txtName.setText("");
@@ -304,4 +364,7 @@ public class Registration extends JFrame {
             registration.setVisible(true);
         });
     }
+
+	
 }
+
