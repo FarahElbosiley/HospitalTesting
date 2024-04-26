@@ -98,10 +98,10 @@ public class DocRecGUI extends javax.swing.JFrame {
                     int Id = Integer.parseInt(IdField.getText());
                     String Name = NameField.getText();
                     String specialty = specialtyField.getText();
-                    int departmentNumber = Integer.parseInt(departmentNumberField.getText());
+                    String departmentNumber = departmentNumberField.getText();
 
                     // Validate input fields
-                    if (Id < 0 || departmentNumber < 0 || Name.isBlank() || specialty.isBlank()) {
+                    if (Id < 0 || Name.isBlank() || specialty.isBlank()) {
                         throw new IllegalArgumentException("Please enter valid input for all fields.");
                     }
 
