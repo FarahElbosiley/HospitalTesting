@@ -11,10 +11,10 @@ public class Doctor {
     private int doctorID;
     private String doctorName;
     private String specialty;
-    private int departmentNumber;
+    private String departmentNumber;
 	
 
-    public Doctor(int doctorID, String doctorName, String specialty, int departmentNumber) {
+    public Doctor(int doctorID, String doctorName, String specialty, String departmentNumber) {
         this.doctorID = doctorID;
         this.doctorName = doctorName;
         this.specialty = specialty;
@@ -33,7 +33,7 @@ public class Doctor {
         return specialty;
     }
 
-    public int getDepartmentNumber() {
+    public String getDepartmentNumber() {
         return departmentNumber;
     }
     
@@ -47,7 +47,7 @@ public class Doctor {
                     int doctorId = Integer.parseInt(parts[0]);
                     String doctorName = parts[1];
                     String specialty = parts[2];
-                    int departmentNumber =Integer.parseInt( parts[3]);
+                    String departmentNumber = parts[3];
                     Doctor doctor = new Doctor(doctorId, doctorName, specialty, departmentNumber);
                     data.add(doctor);
                 } else {
