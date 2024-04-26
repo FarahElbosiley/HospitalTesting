@@ -1,3 +1,4 @@
+package junitlab;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -7,10 +8,25 @@ public class Appointments {
     private String departmentName;
 
     public Appointments(int appointmentId, String doctorName, String departmentName) {
-        this.appointmentId = appointmentId;
-        this.doctorName = doctorName;
-        this.departmentName = departmentName;
-    }
+    	
+    	if (appointmentId < 0) {
+            	
+                throw new IllegalArgumentException("ID must be a non-negative integer.");
+            }
+            
+            if (doctorName.isBlank() || departmentName.isBlank()) {
+                throw new IllegalArgumentException("All fields must have non-null values.");
+            }
+            
+          
+
+            this.appointmentId = appointmentId;
+            this.doctorName = doctorName;
+            this.departmentName = departmentName;
+        }
+
+       
+    
 
     // Getter methods
     public int getAppointmentId() {
@@ -30,13 +46,18 @@ public class Appointments {
     }
 
     public void setDoctorName(String doctorName) {
+    	if (doctorName.isBlank()) {
+            throw new IllegalArgumentException("All fields must have non-null values.");
+        }
         this.doctorName = doctorName;
     }
 
     public void setDepartmentName(String departmentName) {
+    	if (departmentName.isBlank()) {
+            throw new IllegalArgumentException("All fields must have non-null values.");
+        }
         this.departmentName = departmentName;
     }
-
     // Load appointments data from file
     public static ArrayList<Appointments> loadAppointmentsData(String filePath) {
         ArrayList<Appointments> appointments = new ArrayList<>();
