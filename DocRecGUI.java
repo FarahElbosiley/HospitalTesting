@@ -1,25 +1,24 @@
-package junitlab;
-
-//package com.mycompany.testing_project;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DocRecGUI extends javax.swing.JFrame {
 
     public ArrayList<Doctor> doctorsData;
     private JTable jTable1;
-    
+
     public DocRecGUI() {
         initComponents();
         doctorsData = Doctor.loadDoctorsData();
         displayDoctorsData();
 
     }
-
     private void initComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Doctor Records");
@@ -31,23 +30,36 @@ public class DocRecGUI extends javax.swing.JFrame {
             }
         });
 
+        JButton addDoctorButton = new JButton("Add Doctor");
+        addDoctorButton.addActionListener(e -> showAddDoctorForm());
+
+        JButton removeDoctorButton = new JButton("Remove Doctor");
+        removeDoctorButton.addActionListener(e -> showRemoveDoctorForm());
+
         JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         jScrollPane1.setViewportView(jTable1);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addDoctorButton);
+        buttonPanel.add(removeDoctorButton);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
+            .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
         setLocationRelativeTo(null); // Center the frame on the screen
-
     }
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
@@ -61,6 +73,126 @@ public class DocRecGUI extends javax.swing.JFrame {
         }
     }
 
+    private void showAddDoctorForm() {
+        JFrame addDoctorFrame = new JFrame("Add Doctor");
+        addDoctorFrame.setLayout(new GridLayout(0, 2));
+
+        JTextField IdField = new JTextField();
+        JTextField NameField = new JTextField();
+        JTextField SpecialityField = new JTextField();
+        JTextField departmentNumberField = new JTextField();
+
+        addDoctorFrame.add(new JLabel("Doctor ID:"));
+        addDoctorFrame.add(IdField);
+        addDoctorFrame.add(new JLabel("Doctor Name:"));
+        addDoctorFrame.add(NameField);
+        addDoctorFrame.add(new JLabel("Doctor Speciality:"));
+        addDoctorFrame.add(SpecialityField);
+        addDoctorFrame.add(new JLabel("Department Number:"));
+        addDoctorFrame.add(departmentNumberField);
+
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int Id = Integer.parseInt(IdField.getText());
+                    String Name = NameField.getText();
+                    String Speciality = SpecialityField.getText();
+                    int departmentNumber = Integer.parseInt(departmentNumberField.getText());
+
+                    // Validate input fields
+                    if (Id < 0 || departmentNumber < 0 || Name.isBlank() ||  Speciality.isBlank()) {
+                        throw new IllegalArgumentException("Please enter valid input for all fields.");
+                    }
+
+                    // Check for uniqueness of id
+                    for (Doctor existingDoctors : doctorsData) {
+                        if (existingDoctors.getDoctorID() == Id) {
+                            throw new IllegalArgumentException("ID is already in use.");
+                        }
+                    }
+
+                    // If validation passes, create and add the doctor to the list
+                    Doctor doctor = new Doctor(Id, Name, Speciality, departmentNumber);
+                    doctorsData.add(doctor);
+
+                    // Save services to file
+                    Doctor.saveToFile(doctorsData, "D:/Doctors.txt");
+
+                    // Update the displayed doctors data
+                    displayDoctorsData();
+
+                    // Show success message
+                    JOptionPane.showMessageDialog(addDoctorFrame, "Doctor added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Close the add service frame
+                    addDoctorFrame.dispose();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(addDoctorFrame, "Please enter valid numbers for ID and Department Number.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(addDoctorFrame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        addDoctorFrame.add(addButton);
+
+        JButton removeButton = new JButton("Remove Doctor");
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Prompt for doctor ID
+                String input = JOptionPane.showInputDialog(addDoctorFrame, "Enter Doctor ID to remove:");
+                if (input != null && !input.isEmpty()) {
+                    try {
+                        int doctorID = Integer.parseInt(input);
+                        removeDoctor(doctorID);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(addDoctorFrame, "Please enter a valid number for Doctor ID.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
+        addDoctorFrame.setSize(400, 250);
+        addDoctorFrame.setVisible(true);
+        addDoctorFrame.setLocationRelativeTo(null);
+    };  
+    
+    private void showRemoveDoctorForm() {
+        JFrame removeDoctorFrame = new JFrame("Remove Doctor");
+        removeDoctorFrame.setLayout(new GridLayout(0, 1));
+
+        JTextField doctorIDField = new JTextField();
+        JButton removeButton = new JButton("Remove");
+
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int doctorID = Integer.parseInt(doctorIDField.getText());
+
+                    // Call the removeDoctor method to remove the doctor
+                    removeDoctor(doctorID);
+
+                    // Close the removeDoctorFrame
+                    removeDoctorFrame.dispose();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(removeDoctorFrame, "Please enter a valid number for Doctor ID.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        removeDoctorFrame.add(new JLabel("Enter Doctor ID to remove:"));
+        removeDoctorFrame.add(doctorIDField);
+        removeDoctorFrame.add(removeButton);
+
+        removeDoctorFrame.setSize(300, 150);
+        removeDoctorFrame.setVisible(true);
+        removeDoctorFrame.setLocationRelativeTo(null);
+    }
+
+    
     private void displayDoctorsData() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Doctor ID");
@@ -72,6 +204,27 @@ public class DocRecGUI extends javax.swing.JFrame {
         }
         jTable1.setModel(model);
     }
+
+	private void removeDoctor(int serviceID) {
+	    boolean removed = false;
+	    Iterator<Doctor> iterator = doctorsData.iterator();
+	    while (iterator.hasNext()) {
+	    	Doctor doctor = iterator.next();
+	        if (doctor.getDoctorID() == serviceID) {
+	            iterator.remove(); // Remove the doctor from the list
+	            removed = true;
+	            break; // Exit the loop after finding and removing the doctor
+	        }
+	    }
+	
+	    if (removed) {
+	    	Doctor. saveToFile(doctorsData,"D:/Doctors.txt");
+	    	displayDoctorsData();
+	        JOptionPane.showMessageDialog(this, "Doctor removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	    } else {
+	        JOptionPane.showMessageDialog(this, "No Doctor found with ID: " + serviceID, "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
 
     public static void main(String args[]) {
         try {
