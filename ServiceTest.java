@@ -34,158 +34,67 @@ class ServiceTest {
     }
 
     @Test
-    void getServiceId_test() {
+    void servicesGettersAndSettersTest() {
+        // Test getters
         assertEquals(1, service.getServiceId());
-    }
-
-    @Test
-    void getServiceName_test() {
         assertEquals("Consultation", service.getServiceName());
-    }
-
-    @Test
-    void getServiceDate_test() {
         assertEquals("2024-04-21", service.getServiceDate());
-    }
-
-    @Test
-    void getPatientId_test() {
         assertEquals(101, service.getPatientId());
-    }
-
-    @Test
-    void getPatientName_test() {
         assertEquals("John Doe", service.getPatientName());
-    }
-
-    @Test
-    void getServiceCharges_test() {
         assertEquals(50.0, service.getServiceCharges());
-    }
-
-    @Test
-    void getDepartmentNumber_test() {
         assertEquals(3, service.getDepartmentNumber());
-    }
-    @Test
-    void setServiceId_test() {
+
+        // Test setters
         service.setServiceId(2);
-        assertEquals(2, service.getServiceId());
-    }
-
-    @Test
-    void setServiceName_test() {
         service.setServiceName("X-Ray");
-        assertEquals("X-Ray", service.getServiceName());
-    }
-
-    @Test
-    void setServiceDate_test() {
         service.setServiceDate("2024-04-22");
-        assertEquals("2024-04-22", service.getServiceDate());
-    }
-
-    @Test
-    void setPatientId_test() {
         service.setPatientId(102);
-        assertEquals(102, service.getPatientId());
-    }
-
-    @Test
-    void setPatientName_test() {
         service.setPatientName("Jane Smith");
-        assertEquals("Jane Smith", service.getPatientName());
-    }
-
-    @Test
-    void setServiceCharges_test() {
         service.setServiceCharges(75.0);
-        assertEquals(75.0, service.getServiceCharges());
-    }
-
-    @Test
-    void setDepartmentNumber_test() {
         service.setdepartmentNumber(4);
+
+        assertEquals(2, service.getServiceId());
+        assertEquals("X-Ray", service.getServiceName());
+        assertEquals("2024-04-22", service.getServiceDate());
+        assertEquals(102, service.getPatientId());
+        assertEquals("Jane Smith", service.getPatientName());
+        assertEquals(75.0, service.getServiceCharges());
         assertEquals(4, service.getDepartmentNumber());
     }
     @Test
-    public void testLoadServicesData_ValidInput() throws IOException {
-        String testFileName = "C:\\Users\\Malak\\Desktop\\Testservices.txt";
-        ServicesGUI loader = new ServicesGUI();
+    void loadAndSave() {
+        String filePath = "C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\services.txt";
 
-        loader.services.clear();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(testFileName))) {
-            writer.write("1,Consultation,2024-04-21,101,John Doe,50.0,3\n"); // Removed newline character
-            writer.write("2,X-Ray,2024-04-22,102,Jane Smith,75.0,4\n"); // Removed newline character
-        } catch (IOException e) {
-            fail("Failed to prepare test file: " + e.getMessage());
-        }
+        ArrayList<Services> testServices = new ArrayList<>();
+        testServices.add(new Services(1, "Service 1", "2022-01-01", 1001, "Patient 1", 50.0, 1));
+        testServices.add(new Services(2, "Service 2", "2022-02-02", 1002, "Patient 2", 75.0, 2));
 
-        loader.loadServicesData();
+        // Save services data to file
+        Services.saveToFile(testServices, filePath);
 
-        assertEquals(2, loader.services.size());
+        // Clear the list and load services data from the file
+        testServices.clear();
+        testServices = Services.loadServicesData(filePath);
 
-        Services firstService = loader.services.get(0);
-        assertEquals(1, firstService.getServiceId());
-        assertEquals("Consultation", firstService.getServiceName());
-        assertEquals("2024-04-21", firstService.getServiceDate());
-        assertEquals(101, firstService.getPatientId());
-        assertEquals("John Doe", firstService.getPatientName());
-        assertEquals(50.0, firstService.getServiceCharges());
-        assertEquals(3, firstService.getDepartmentNumber());
+        // Assert the size and contents of the loaded services
+        assertEquals(2, testServices.size());
 
-        Services secondService = loader.services.get(1);
-        assertEquals(2, secondService.getServiceId());
-        assertEquals("X-Ray", secondService.getServiceName());
-        assertEquals("2024-04-22", secondService.getServiceDate());
-        assertEquals(102, secondService.getPatientId());
-        assertEquals("Jane Smith", secondService.getPatientName());
-        assertEquals(75.0, secondService.getServiceCharges());
-        assertEquals(4, secondService.getDepartmentNumber());
+        Services service1 = testServices.get(0);
+        assertEquals(1, service1.getServiceId());
+        assertEquals("Service 1", service1.getServiceName());
+        assertEquals("2022-01-01", service1.getServiceDate());
+        assertEquals(1001, service1.getPatientId());
+        assertEquals("Patient 1", service1.getPatientName());
+        assertEquals(50.0, service1.getServiceCharges(), 0.001);
+        assertEquals(1, service1.getDepartmentNumber());
+
+        Services service2 = testServices.get(1);
+        assertEquals(2, service2.getServiceId());
+        assertEquals("Service 2", service2.getServiceName());
+        assertEquals("2022-02-02", service2.getServiceDate());
+        assertEquals(1002, service2.getPatientId());
+        assertEquals("Patient 2", service2.getPatientName());
+        assertEquals(75.0, service2.getServiceCharges(), 0.001);
+        assertEquals(2, service2.getDepartmentNumber());
     }
-    @Test
-    public void testSaveToFile() throws IOException {
-        String testFileName = "C:\\Users\\Malak\\Desktop\\Testservices2.txt"; 
-        ServicesGUI loader = new ServicesGUI();
-        loader.services.clear();
-
-        ArrayList<Services> services = new ArrayList<>();
-        services.add(new Services(1, "Consultation", "2024-04-21", 101, "John Doe", 50.0, 3));
-        services.add(new Services(2, "X-Ray", "2024-04-22", 102, "Jane Smith", 75.0, 4));
-
-        loader.services = services;
-
-        loader.saveServicesData();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(testFileName))) {
-            String line;
-            int count = 0;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 7) { // Check if the number of fields is correct
-                    int serviceId = Integer.parseInt(parts[0]);
-                    String serviceName = parts[1];
-                    String serviceDate = parts[2];
-                    int patientId = Integer.parseInt(parts[3]);
-                    String patientName = parts[4];
-                    double serviceCharges = Double.parseDouble(parts[5]);
-                    int departmentNumber = Integer.parseInt(parts[6]);
-
-                    assertEquals(services.get(count).getServiceId(), serviceId);
-                    assertEquals(services.get(count).getServiceName(), serviceName);
-                    assertEquals(services.get(count).getServiceDate(), serviceDate);
-                    assertEquals(services.get(count).getPatientId(), patientId);
-                    assertEquals(services.get(count).getPatientName(), patientName);
-                    assertEquals(services.get(count).getServiceCharges(), serviceCharges);
-                    assertEquals(services.get(count).getDepartmentNumber(), departmentNumber);
-
-                    count++;
-                } else {
-                    fail("Invalid record format: " + line);
-                }
-            }
-            assertEquals(services.size(), count);
-        } catch (IOException e) {
-            fail("Failed to read from test file: " + e.getMessage());
-        }
-    }}
+}
