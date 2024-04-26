@@ -1,170 +1,146 @@
 package junitlab;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import org.junit.jupiter.api.AfterAll;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 class MedicalRecordTest {
 	MedicalRecord MR;
-	  @BeforeAll
-	    public static void startMessage() {
-	        
-	        System.out.println("Starting tests...");
-	    }
-	    @AfterAll
-	    public static void EndMessage() {
-	      
-	        System.out.println("All tests have been executed and passed.");
-	    }
 	   @BeforeEach
 	    public void initial() 
 	   {
 	        MR = new MedicalRecord(123, "120/80", "100", "Normal", "O+", "No");
 	   }
+	   
 	   @Test
-	    void testGetID() {
+	    void testMedicalRecordGettersAndSetters() {
+	        // Test getters
 	        assertEquals(123, MR.getID());
-	    }
-
-	    @Test
-	    void testGetBloodPressure() {
 	        assertEquals("120/80", MR.getBloodPressure());
-	    }
-
-	    @Test
-	    void testGetBloodSugar() {
 	        assertEquals("100", MR.getBloodSugar());
-	    }
-
-	    @Test
-	    void testGetCholesterol() {
 	        assertEquals("Normal", MR.getCholesterol());
-	    }
-
-	    @Test
-	    void testGetBloodType() {
 	        assertEquals("O+", MR.getBloodType());
-	    }
-
-	    @Test
-	    void testGetAllergies() {
 	        assertEquals("No", MR.getAllergies());
-	    }
-
-	    @Test
-	    void testSetID() {
+	        
+	        // Test setters
 	        MR.setID(456);
-	        assertEquals(456, MR.getID());
-	    }
-
-	    @Test
-	    void testSetBloodPressure() {
 	        MR.setBloodPressure("110/70");
-	        assertEquals("110/70", MR.getBloodPressure());
-	    }
-
-	    @Test
-	    void testSetBloodSugar() {
 	        MR.setBloodSugar("90");
-	        assertEquals("90", MR.getBloodSugar());
-	    }
-
-	    @Test
-	    void testSetCholesterol() {
 	        MR.setCholesterol("Low");
-	        assertEquals("Low", MR.getCholesterol());
-	    }
-
-	    @Test
-	    void testSetBloodType() {
 	        MR.setBloodType("A+");
-	        assertEquals("A+", MR.getBloodType());
-	    }
-
-	    @Test
-	    void testSetAllergies() {
 	        MR.setAllergies("NO");
+	        
+	        // Test updated values
+	        assertEquals(456, MR.getID());
+	        assertEquals("110/70", MR.getBloodPressure());
+	        assertEquals("90", MR.getBloodSugar());
+	        assertEquals("Low", MR.getCholesterol());
+	        assertEquals("A+", MR.getBloodType());
 	        assertEquals("NO", MR.getAllergies());
 	    }
+	   
+
 	    @Test
-	    public void testLoadMedicalRecords_ValidInput() throws IOException {
-	        String testFileName = "C:\\Users\\Malak\\Desktop\\TestMedicalRecords.txt";
-	        MedicalRecordGUI loader = new  MedicalRecordGUI();
-	        loader.medicalRecords.clear();
-	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(testFileName))) {
-	            writer.write("123,120/80,100,Normal,O+,None\n");
-	            writer.write("456,110/70,90,Low,A+,Peanuts\n");
-	        } catch (IOException e) {
-	            fail("Failed to prepare test file: " + e.getMessage());
-	        }
+	    void testSetWrongID() {
+	    	try {
+		         new MedicalRecord(-1, "120/80", "100", "Normal", "O+", "No");
+		         
+		     } catch (IllegalArgumentException e) {
+		    	 
+		         assertEquals("ID must be a positive integer.", e.getMessage());
+		     }
+		 }
+	    
+	    @Test
+	    void testSetNullBloodPressure() {
+	        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+	            new MedicalRecord(9, "", "100", "Normal", "O+", "No")
+	        );
 
-	        loader.loadMedicalRecords();
-	        
-	        assertEquals(2, loader.medicalRecords.size());
-	        MedicalRecord firstRecord = loader.medicalRecords.get(0);
-	        assertEquals(123, firstRecord.getID());
-	        assertEquals("120/80", firstRecord.getBloodPressure());
-	        assertEquals("100", firstRecord.getBloodSugar());
-	        assertEquals("Normal", firstRecord.getCholesterol());
-	        assertEquals("O+", firstRecord.getBloodType());
-	        assertEquals("None", firstRecord.getAllergies());
-
-	        MedicalRecord secondRecord = loader.medicalRecords.get(1);
-	        assertEquals(456, secondRecord.getID());
-	        assertEquals("110/70", secondRecord.getBloodPressure());
-	        assertEquals("90", secondRecord.getBloodSugar());
-	        assertEquals("Low", secondRecord.getCholesterol());
-	        assertEquals("A+", secondRecord.getBloodType());
-	        assertEquals("Peanuts", secondRecord.getAllergies());
+	        assertEquals("All fields must have non-null values.", exception.getMessage());
 	    }
+
+	    
+	    
 	    @Test
-	    public void testSaveToFile() throws IOException {
-	        String testFileName = " ";
-	        MedicalRecordGUI loader = new  MedicalRecordGUI();
-	        
-	        loader.medicalRecords.clear();
-
-	        ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
-	        medicalRecords.add(new MedicalRecord(123, "120/80", "100", "Normal", "O+", "None"));
-	        medicalRecords.add(new MedicalRecord(456, "110/70", "90", "Low", "A+", "Peanuts"));
-
-	        loader.medicalRecords = medicalRecords;
-
-	        loader.saveToFile();
-
-	        try (BufferedReader reader = new BufferedReader(new FileReader(testFileName))) {
-	            String line;
-	            int count = 0;
-	            while ((line = reader.readLine()) != null) {
-	                String[] parts = line.split(",");
-	                int ID = Integer.parseInt(parts[0]);
-	                String bloodPressure = parts[1];
-	                String bloodSugar = parts[2];
-	                String cholesterol = parts[3];
-	                String bloodType = parts[4];
-	                String allergies = parts[5];
-	                
-	                assertEquals(medicalRecords.get(count).getID(), ID);
-	                assertEquals(medicalRecords.get(count).getBloodPressure(), bloodPressure);
-	                assertEquals(medicalRecords.get(count).getBloodSugar(), bloodSugar);
-	                assertEquals(medicalRecords.get(count).getCholesterol(), cholesterol);
-	                assertEquals(medicalRecords.get(count).getBloodType(), bloodType);
-	                assertEquals(medicalRecords.get(count).getAllergies(), allergies);
-	                
-	                count++;
-	            }
-	            assertEquals(medicalRecords.size(), count);
-	        } catch (IOException e) {
-	            fail("Failed to read from test file: " + e.getMessage());
+	    void testSetWrongallergies() {
+	    	try {
+		         new MedicalRecord(11, "120/80", "100", "Normal", "O+", "ll");
+		     } catch (IllegalArgumentException e) {
+		         assertEquals("Allergies must be 'Yes' or 'No'.", e.getMessage());
+		     }
+		 }
+	    
+	    
+	    @Test
+	    void testSetWrongCholesterol() {
+	    	try {
+		         new MedicalRecord(12, "120/80", "100", "N", "O+", "No");  
+		     } catch (IllegalArgumentException e) {
+		         assertEquals("Cholestrol level should be Low, Normal or High", e.getMessage());
+		     }
+		 }
+	    
+	    @Test
+	    void testSetWrongBloodSugar() {
+	        try {
+	            new MedicalRecord(13, "120/80", "350", "Normal", "O+", "No");
+	        } catch (IllegalArgumentException e) {
+	            assertEquals("Blood sugar must be between 10 and 650.", e.getMessage());
 	        }
 	    }
-		 
-}
+
+	    @Test
+	    void testSetWrongBloodSugar2() {
+	        try {
+	            new MedicalRecord(14, "120/80", "5", "Normal", "O+", "No");
+	        } catch (IllegalArgumentException e) {
+	            assertEquals("Blood sugar must be between 10 and 650.", e.getMessage());
+	        }
+	    }
+	    @Test
+	    void loadAndSave() {
+	        String filePath = "C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\MedicalRecord.txt";
+
+	        ArrayList<MedicalRecord> testRecords = new ArrayList<>();
+	        testRecords.add(new MedicalRecord(1, "120/80", "80", "Normal", "A+", "Yes"));
+	        testRecords.add(new MedicalRecord(2, "130/90", "100", "High", "B-", "No"));
+
+	        MedicalRecord.saveToFile(testRecords, filePath);
+
+	        testRecords.clear();
+	        testRecords = MedicalRecord.loadMedicalRecordsData(filePath);
+	        assertEquals(2, testRecords.size());
+
+	        MedicalRecord record1 = testRecords.get(0);
+	        assertEquals(1, record1.getID());
+	        assertEquals("120/80", record1.getBloodPressure());
+	        assertEquals("80", record1.getBloodSugar());
+	        assertEquals("Normal", record1.getCholesterol());
+	        assertEquals("A+", record1.getBloodType());
+	        assertEquals("Yes", record1.getAllergies());
+
+	        MedicalRecord record2 = testRecords.get(1);
+	        assertEquals(2, record2.getID());
+	        assertEquals("130/90", record2.getBloodPressure());
+	        assertEquals("100", record2.getBloodSugar());
+	        assertEquals("High", record2.getCholesterol());
+	        assertEquals("B-", record2.getBloodType());
+	        assertEquals("No", record2.getAllergies());
+	    }
+
+	    
+	    }
