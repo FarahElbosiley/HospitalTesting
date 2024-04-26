@@ -112,6 +112,14 @@ class MedicalRecordTest {
 	        }
 	    }
 	    @Test
+	    void testSetInvalidBloodType() {
+	        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+	            MR.setBloodType("Invalid")
+	        );
+
+	        assertEquals("Invalid blood type. Please provide a valid blood type (\"A+\", \"A-\", \"B+\", \"B-\", \"AB+\", \"AB-\", \"O+\", \"O-\").", exception.getMessage());
+	    }
+	    @Test
 	    void loadAndSave() {
 	        String filePath = "C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\MedicalRecord.txt";
 
