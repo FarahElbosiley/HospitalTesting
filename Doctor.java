@@ -1,9 +1,5 @@
-package junitlab;
-
-//package com.mycompany.testing_project;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,10 +11,10 @@ public class Doctor {
     private int doctorID;
     private String doctorName;
     private String specialty;
-    private String departmentNumber;
+    private int departmentNumber;
 	
 
-    public Doctor(int doctorID, String doctorName, String specialty, String departmentNumber) {
+    public Doctor(int doctorID, String doctorName, String specialty, int departmentNumber) {
         this.doctorID = doctorID;
         this.doctorName = doctorName;
         this.specialty = specialty;
@@ -37,13 +33,13 @@ public class Doctor {
         return specialty;
     }
 
-    public String getDepartmentNumber() {
+    public int getDepartmentNumber() {
         return departmentNumber;
     }
     
     public static ArrayList<Doctor> loadDoctorsData() {
         ArrayList<Doctor> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\Doctors.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:/Doctors.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -51,7 +47,7 @@ public class Doctor {
                     int doctorId = Integer.parseInt(parts[0]);
                     String doctorName = parts[1];
                     String specialty = parts[2];
-                    String departmentNumber = parts[3];
+                    int departmentNumber =Integer.parseInt( parts[3]);
                     Doctor doctor = new Doctor(doctorId, doctorName, specialty, departmentNumber);
                     data.add(doctor);
                 } else {
@@ -63,6 +59,16 @@ public class Doctor {
         }
         return data;
     }
-
+    // Save Doctor data to a file
+    public static void saveToFile(ArrayList<Doctor> doctor, String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            for (Doctor doctors : doctor) {
+                writer.write(doctors.getDoctorID() + "," + doctors.getDoctorName() + "," + doctors.getSpecialty() + ","
+                        + doctors.getDepartmentNumber() + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving services data: " + e.getMessage());
+        }
+    }
     
 }
