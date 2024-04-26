@@ -72,22 +72,21 @@ public class DocRecGUI extends javax.swing.JFrame {
                     "\nDepartment Number: " + doctor.getDepartmentNumber());
         }
     }
-
     private void showAddDoctorForm() {
         JFrame addDoctorFrame = new JFrame("Add Doctor");
         addDoctorFrame.setLayout(new GridLayout(0, 2));
 
         JTextField IdField = new JTextField();
         JTextField NameField = new JTextField();
-        JTextField SpecialityField = new JTextField();
+        JTextField specialtyField = new JTextField();
         JTextField departmentNumberField = new JTextField();
 
         addDoctorFrame.add(new JLabel("Doctor ID:"));
         addDoctorFrame.add(IdField);
         addDoctorFrame.add(new JLabel("Doctor Name:"));
         addDoctorFrame.add(NameField);
-        addDoctorFrame.add(new JLabel("Doctor Speciality:"));
-        addDoctorFrame.add(SpecialityField);
+        addDoctorFrame.add(new JLabel("Doctor specialty:"));
+        addDoctorFrame.add(specialtyField);
         addDoctorFrame.add(new JLabel("Department Number:"));
         addDoctorFrame.add(departmentNumberField);
 
@@ -98,12 +97,16 @@ public class DocRecGUI extends javax.swing.JFrame {
                 try {
                     int Id = Integer.parseInt(IdField.getText());
                     String Name = NameField.getText();
-                    String Speciality = SpecialityField.getText();
+                    String specialty = specialtyField.getText();
                     int departmentNumber = Integer.parseInt(departmentNumberField.getText());
 
                     // Validate input fields
-                    if (Id < 0 || departmentNumber < 0 || Name.isBlank() ||  Speciality.isBlank()) {
+                    if (Id < 0 || departmentNumber < 0 || Name.isBlank() || specialty.isBlank()) {
                         throw new IllegalArgumentException("Please enter valid input for all fields.");
+                    }
+
+                    if (!Name.matches("[a-zA-Z.\\s]+") || !specialty.matches("[a-zA-Z]+")) {
+                        throw new IllegalArgumentException("Name and specialty should only contain letters.");
                     }
 
                     // Check for uniqueness of id
@@ -114,10 +117,10 @@ public class DocRecGUI extends javax.swing.JFrame {
                     }
 
                     // If validation passes, create and add the doctor to the list
-                    Doctor doctor = new Doctor(Id, Name, Speciality, departmentNumber);
+                    Doctor doctor = new Doctor(Id, Name, specialty, departmentNumber);
                     doctorsData.add(doctor);
 
-                    // Save services to file
+                    // Save doctors to file
                     Doctor.saveToFile(doctorsData, "D:/Doctors.txt");
 
                     // Update the displayed doctors data
@@ -137,27 +140,11 @@ public class DocRecGUI extends javax.swing.JFrame {
         });
         addDoctorFrame.add(addButton);
 
-        JButton removeButton = new JButton("Remove Doctor");
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Prompt for doctor ID
-                String input = JOptionPane.showInputDialog(addDoctorFrame, "Enter Doctor ID to remove:");
-                if (input != null && !input.isEmpty()) {
-                    try {
-                        int doctorID = Integer.parseInt(input);
-                        removeDoctor(doctorID);
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(addDoctorFrame, "Please enter a valid number for Doctor ID.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-
         addDoctorFrame.setSize(400, 250);
         addDoctorFrame.setVisible(true);
         addDoctorFrame.setLocationRelativeTo(null);
-    };  
+    }
+
     
     private void showRemoveDoctorForm() {
         JFrame removeDoctorFrame = new JFrame("Remove Doctor");
