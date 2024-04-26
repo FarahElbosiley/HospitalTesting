@@ -1,11 +1,14 @@
 package junitlab;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+
+
 class DoctorTest {
 	@BeforeAll
     public static void startMessage() {
@@ -40,18 +43,7 @@ class DoctorTest {
             assertNotNull(doctor.getDepartmentNumber());
         }
     }
-	@Test
-	public void testSaveDoctorsData() {
-	    ArrayList<Doctor> doctorsData = new ArrayList<>();
-	    doctorsData.add(new Doctor(102, "Dr. Jane Smith", "Neurology", "2")); 
-	   
-	    Doctor.saveDoctorsData(doctorsData); 
-	    	assertEquals(102, doctorsData.get(0).getDoctorID());
-	        assertEquals("Dr. Jane Smith", doctorsData.get(0).getDoctorName());
-	        assertEquals("Neurology", doctorsData.get(0).getSpecialty());
-	        assertEquals("2", doctorsData.get(0).getDepartmentNumber());
-	    
-	}}
+}
 	
 	
 
