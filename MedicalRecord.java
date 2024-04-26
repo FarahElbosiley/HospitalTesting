@@ -1,10 +1,10 @@
-package junitlab;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MedicalRecord {
     private int ID;
@@ -13,7 +13,8 @@ public class MedicalRecord {
     private String cholesterol;
     private String bloodType;
     private String allergies;
-
+    // List of valid blood types
+    public String[] validBloodTypes = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
     // Constructor
     public MedicalRecord(int ID, String bloodPressure, String bloodSugar, String cholesterol, String bloodType, String allergies) {
     	if (ID <= 0) {
@@ -34,12 +35,17 @@ public class MedicalRecord {
     	if ( Double.parseDouble(bloodSugar) < 10 || Double.parseDouble(bloodSugar) > 650) {
             throw new IllegalArgumentException("Blood sugar must be between 10 and 650.");
         }
-        
+    	   // Check if bloodType is blank or not in the list of valid blood types
+        if (bloodType.isBlank() || !Arrays.asList(validBloodTypes).contains(bloodType.toUpperCase())) {
+            throw new IllegalArgumentException("Invalid blood type. Please provide a valid blood type (\"A+\", \"A-\", \"B+\", \"B-\", \"AB+\", \"AB-\", \"O+\", \"O-\").");
+        } else {
+            this.bloodType = bloodType.toUpperCase(); // Store the blood type in uppercase for consistency
+        }
         this.ID = ID;
         this.bloodPressure = bloodPressure;
         this.bloodSugar = bloodSugar;
         this.cholesterol = cholesterol;
-        this.bloodType = bloodType;
+        this.bloodType = bloodType.toUpperCase(); // Store the blood type in uppercase for consistency
         this.allergies = allergies;
     }
 
@@ -94,11 +100,15 @@ public class MedicalRecord {
     }}
 
     public void setBloodType(String bloodType) {
-    	if(bloodType.isBlank()) {
-    		throw new IllegalArgumentException("All fields must have non-null values.");
-    	}else {
-        this.bloodType = bloodType;
-    }}
+   
+
+        // Check if bloodType is blank or not in the list of valid blood types
+        if (bloodType.isBlank() || !Arrays.asList(validBloodTypes).contains(bloodType.toUpperCase())) {
+            throw new IllegalArgumentException("Invalid blood type. Please provide a valid blood type (\"A+\", \"A-\", \"B+\", \"B-\", \"AB+\", \"AB-\", \"O+\", \"O-\").");
+        } else {
+            this.bloodType = bloodType.toUpperCase(); // Store the blood type in uppercase for consistency
+        }
+    }
 
     public void setAllergies(String allergies) {
     	if (!allergies.equalsIgnoreCase("Yes") && !allergies.equalsIgnoreCase("No")) {
