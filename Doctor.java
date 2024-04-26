@@ -1,3 +1,5 @@
+package junitlab;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,6 +17,14 @@ public class Doctor {
 	
 
     public Doctor(int doctorID, String doctorName, String specialty, String departmentNumber) {
+    	if (doctorID < 0 ) {
+        	
+            throw new IllegalArgumentException("ID must be a non-negative integer.");
+        }
+        
+        if (doctorName.isBlank() || departmentNumber.isBlank() || specialty.isBlank()) {
+            throw new IllegalArgumentException("All fields must have non-null values.");
+        }
         this.doctorID = doctorID;
         this.doctorName = doctorName;
         this.specialty = specialty;
@@ -25,21 +35,53 @@ public class Doctor {
         return doctorID;
     }
 
+    public void setDoctorID(int doctorID) {
+    	if (doctorID < 0 ) {
+        	
+            throw new IllegalArgumentException("ID must be a non-negative integer.");
+        }
+        
+        this.doctorID = doctorID;
+    }
+
     public String getDoctorName() {
         return doctorName;
     }
 
+    public void setDoctorName(String doctorName) {
+    	 if (doctorName.isBlank() ) {
+             throw new IllegalArgumentException("All fields must have non-null values.");
+         }
+        this.doctorName = doctorName;
+    }
+
     public String getSpecialty() {
+    	
         return specialty;
     }
 
+    public void setSpecialty(String specialty) {
+    	 if (specialty.isBlank()) {
+             throw new IllegalArgumentException("All fields must have non-null values.");
+         }
+        this.specialty = specialty;
+    }
+
     public String getDepartmentNumber() {
+    	 
         return departmentNumber;
+    }
+
+    public void setDepartmentNumber(String departmentNumber) {
+    	if (departmentNumber.isBlank() ) {
+            throw new IllegalArgumentException("All fields must have non-null values.");
+        }
+        this.departmentNumber = departmentNumber;
     }
     
     public static ArrayList<Doctor> loadDoctorsData() {
         ArrayList<Doctor> data = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("D:/Doctors.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\Doctors.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
