@@ -1,3 +1,5 @@
+package junitlab;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -13,7 +15,7 @@ public class AppointmentsGUI extends JFrame {
 
     public AppointmentsGUI() {
         initComponents();
-        appointments = Appointments.loadAppointmentsData("D:/Appointments.txt");
+        appointments = Appointments.loadAppointmentsData("C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\Appointment");
         displayAppointmentsData();
     }
 
@@ -108,23 +110,36 @@ public class AppointmentsGUI extends JFrame {
 
         JButton addButton = new JButton("Add");
         addButton.addActionListener(new ActionListener() {
-            @Override
+        	@Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     int appointmentId = Integer.parseInt(appointmentIdField.getText());
                     String doctorName = doctorNameField.getText();
                     String departmentName = departmentNameField.getText();
+                    if (appointmentId < 0) {
+                        throw new IllegalArgumentException("Appointment ID cannot be negative.");
+                    }
+
+                    for (Appointments appointment : appointments) {
+                        if (appointment.getAppointmentId() == appointmentId) {
+                            throw new IllegalArgumentException("Appointment ID is already in use.");
+                        }
+                    }
 
                     Appointments newAppointment = new Appointments(appointmentId, doctorName, departmentName);
                     appointments.add(newAppointment);
 
-                    Appointments.saveToFile(appointments, "D:/Appointments.txt");
+
+                    Appointments.saveToFile(appointments, "C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\Appointment");
                     displayAppointmentsData();
                     addAppointmentFrame.dispose();
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Please enter a valid Appointment ID.", "Error", JOptionPane.ERROR_MESSAGE);
+                }  catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            }
+
+        	}
         });
 
         addAppointmentFrame.add(addButton);
@@ -155,19 +170,20 @@ public class AppointmentsGUI extends JFrame {
             updateButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+               try {
                     // Update appointment details in memory
                     selectedAppointment.setDoctorName(doctorNameField.getText());
                     selectedAppointment.setDepartmentName(departmentNameField.getText());
 
-                    // Save updated appointments data to file
-                    Appointments.saveToFile(appointments, "D:/Appointments.txt");
+                    Appointments.saveToFile(appointments, "C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\Appointment");
 
-                    // Refresh the appointments table
                     displayAppointmentsData();
 
                     // Close the update window
                     updateAppointmentFrame.dispose();
-                }
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }}
             });
 
             updateAppointmentFrame.add(updateButton);
@@ -191,7 +207,7 @@ public class AppointmentsGUI extends JFrame {
         // Check if appointment was found and removed
         if (found) {
             // Save updated appointments data to file
-            Appointments.saveToFile(appointments, "D:/Appointments.txt");
+            Appointments.saveToFile(appointments, "C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\Appointment");
 
             // Refresh the appointments table
             displayAppointmentsData();
