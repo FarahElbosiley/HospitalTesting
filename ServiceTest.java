@@ -1,12 +1,7 @@
-package junitlab;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterAll;
@@ -17,17 +12,26 @@ import org.junit.jupiter.api.Test;
 class ServiceTest {
 
 	Services service;
+    private static String filePath;
+
+	
 	 @BeforeAll
 	    public static void startMessage() {
 	        
 	        System.out.println("Starting tests...");
 	    }
-	    @AfterAll
+	 @AfterAll
 	    public static void EndMessage() {
-	      
 	        System.out.println("All tests have been executed and passed.");
+	        // Delete the file after testing
+	        if (filePath != null) {
+	            File file = new File(filePath);
+	            if (file.exists()) {
+	                file.delete();
+	                System.out.println("Test file deleted.");
+	            }
+	        }
 	    }
-
     @BeforeEach
     public void initial() {
         service = new Services(1, "Consultation", "2024-04-21", 101, "John Doe", 50.0, 3);
@@ -61,11 +65,12 @@ class ServiceTest {
         assertEquals(75.0, service.getServiceCharges());
         assertEquals(4, service.getDepartmentNumber());
     }
+    
     @Test
     void loadAndSave() {
-        String filePath = "C:\\Users\\Malak\\Desktop\\Software Testing\\src\\main\\java\\junitlab\\services.txt";
+        filePath = "D:/services_test.txt"; 
 
-        ArrayList<Services> testServices = new ArrayList<>();
+        ArrayList <Services> testServices = new ArrayList<>();
         testServices.add(new Services(1, "Service 1", "2022-01-01", 1001, "Patient 1", 50.0, 1));
         testServices.add(new Services(2, "Service 2", "2022-02-02", 1002, "Patient 2", 75.0, 2));
 
